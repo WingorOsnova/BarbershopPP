@@ -1,0 +1,562 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbershop - Стиль и мастерство</title>
+    <link rel="stylesheet" href="{% static 'booking/css/home.css' %}">
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo" data-lang-key="logo">BARBERSHOP</div>
+            <div class="nav-right" id="navRight">
+                <ul class="nav-links">
+                    <li><a href="#about" data-lang-key="nav-about">О нас</a></li>
+                    <li><a href="#services" data-lang-key="nav-services">Услуги</a></li>
+                    <li><a href="#barbers" data-lang-key="nav-barbers">Барберы</a></li>
+                    <li><a href="#booking" data-lang-key="nav-booking">Записаться</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="#login" class="auth-btn login" data-lang-key="btn-login">Войти</a>
+                    <a href="#register" class="auth-btn register" data-lang-key="btn-register">Регистрация</a>
+                </div>
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="ru">RU</button>
+                    <button class="lang-btn" data-lang="uk">UA</button>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
+            </div>
+            <div class="burger" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-lang-key="hero-title">Стиль и мастерство</h1>
+            <p class="hero-subtitle" data-lang-key="hero-subtitle">Профессиональный уход за вашим образом</p>
+            <a href="#booking" class="cta-button" data-lang-key="hero-cta">Записаться сейчас</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title fade-in" data-lang-key="about-title">О нашем барбершопе</h2>
+        <p class="section-subtitle fade-in" data-lang-key="about-subtitle">Традиции и современность</p>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <h3 data-lang-key="about-mission-title">Наша миссия</h3>
+                <p data-lang-key="about-mission-text">
+                    Мы создаем уникальный опыт для каждого клиента, сочетая классические техники барберинга с современными тенденциями. Наша команда профессионалов превратит ваш визит в настоящее удовольствие.
+                </p>
+                <p data-lang-key="about-experience-text">
+                    С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. Доверьте нам свой образ, и вы не пожалеете.
+                </p>
+            </div>
+            <div class="about-image fade-in"></div>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title fade-in" data-lang-key="services-title">Наши услуги</h2>
+        <p class="section-subtitle fade-in" data-lang-key="services-subtitle">Качество по доступным ценам</p>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-icon">✂️</div>
+                <h3 data-lang-key="service-1-name">Классическая стрижка</h3>
+                <p data-lang-key="service-1-desc">Профессиональная мужская стрижка от опытных мастеров</p>
+                <div class="service-price">450 ₴</div>
+                <div class="service-duration">⏱ 45 <span data-lang-key="minutes">мин</span></div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">🪒</div>
+                <h3 data-lang-key="service-2-name">Бритьё опасной бритвой</h3>
+                <p data-lang-key="service-2-desc">Традиционное бритьё с горячим полотенцем</p>
+                <div class="service-price">350 ₴</div>
+                <div class="service-duration">⏱ 30 <span data-lang-key="minutes">мин</span></div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">🧔</div>
+                <h3 data-lang-key="service-3-name">Моделирование бороды</h3>
+                <p data-lang-key="service-3-desc">Создание и поддержание формы бороды</p>
+                <div class="service-price">300 ₴</div>
+                <div class="service-duration">⏱ 30 <span data-lang-key="minutes">мин</span></div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">💇</div>
+                <h3 data-lang-key="service-4-name">Стрижка + Борода</h3>
+                <p data-lang-key="service-4-desc">Комплексный уход за образом</p>
+                <div class="service-price">650 ₴</div>
+                <div class="service-duration">⏱ 60 <span data-lang-key="minutes">мин</span></div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">👶</div>
+                <h3 data-lang-key="service-5-name">Детская стрижка</h3>
+                <p data-lang-key="service-5-desc">Комфортная стрижка для самых маленьких</p>
+                <div class="service-price">300 ₴</div>
+                <div class="service-duration">⏱ 30 <span data-lang-key="minutes">мин</span></div>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">✨</div>
+                <h3 data-lang-key="service-6-name">VIP-обслуживание</h3>
+                <p data-lang-key="service-6-desc">Полный комплекс услуг премиум-класса</p>
+                <div class="service-price">1200 ₴</div>
+                <div class="service-duration">⏱ 90 <span data-lang-key="minutes">мин</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="barbers">
+        <h2 class="section-title fade-in" data-lang-key="barbers-title">Наши мастера</h2>
+        <p class="section-subtitle fade-in" data-lang-key="barbers-subtitle">Профессионалы своего дела</p>
+        <div class="barbers-grid">
+            <div class="barber-card fade-in">
+                <div class="barber-image"></div>
+                <div class="barber-info">
+                    <h3 data-lang-key="barber-1-name">Алексей Иванов</h3>
+                    <p class="barber-experience" data-lang-key="barber-1-exp">Опыт: 12 лет</p>
+                    <p class="barber-description" data-lang-key="barber-1-desc">
+                        Мастер классических и современных стрижек. Специализация: fade, undercut, classic cuts.
+                    </p>
+                </div>
+            </div>
+            <div class="barber-card fade-in">
+                <div class="barber-image"></div>
+                <div class="barber-info">
+                    <h3 data-lang-key="barber-2-name">Дмитрий Петров</h3>
+                    <p class="barber-experience" data-lang-key="barber-2-exp">Опыт: 8 лет</p>
+                    <p class="barber-description" data-lang-key="barber-2-desc">
+                        Эксперт по бородам и усам. Создает уникальные образы и стили для каждого клиента.
+                    </p>
+                </div>
+            </div>
+            <div class="barber-card fade-in">
+                <div class="barber-image"></div>
+                <div class="barber-info">
+                    <h3 data-lang-key="barber-3-name">Максим Сидоров</h3>
+                    <p class="barber-experience" data-lang-key="barber-3-exp">Опыт: 10 лет</p>
+                    <p class="barber-description" data-lang-key="barber-3-desc">
+                        Специалист по сложным стрижкам и креативным образам. Победитель барбер-конкурсов.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="booking">
+        <h2 class="section-title fade-in" data-lang-key="booking-title">Записаться на стрижку</h2>
+        <p class="section-subtitle fade-in" data-lang-key="booking-subtitle">Выберите удобное время</p>
+        <div class="booking-container fade-in">
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label data-lang-key="form-name">Ваше имя *</label>
+                    <input type="text" id="name" required placeholder="">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-lang-key="form-phone">Телефон *</label>
+                        <input type="tel" id="phone" required placeholder="+380">
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="form-email">Email</label>
+                        <input type="email" id="email" placeholder="">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-lang-key="form-barber">Выберите барбера *</label>
+                        <select id="barber" required>
+                            <option value="" data-lang-key="form-select-barber">-- Выберите --</option>
+                            <option value="1" data-lang-key="barber-1-name">Алексей Иванов</option>
+                            <option value="2" data-lang-key="barber-2-name">Дмитрий Петров</option>
+                            <option value="3" data-lang-key="barber-3-name">Максим Сидоров</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="form-service">Выберите услугу *</label>
+                        <select id="service" required>
+                            <option value="" data-lang-key="form-select-service">-- Выберите --</option>
+                            <option value="1" data-lang-key="service-1-name">Классическая стрижка</option>
+                            <option value="2" data-lang-key="service-2-name">Бритьё опасной бритвой</option>
+                            <option value="3" data-lang-key="service-3-name">Моделирование бороды</option>
+                            <option value="4" data-lang-key="service-4-name">Стрижка + Борода</option>
+                            <option value="5" data-lang-key="service-5-name">Детская стрижка</option>
+                            <option value="6" data-lang-key="service-6-name">VIP-обслуживание</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-lang-key="form-date">Дата *</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-lang-key="form-time">Время *</label>
+                        <select id="time" required>
+                            <option value="" data-lang-key="form-select-time">-- Выберите --</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label data-lang-key="form-comment">Комментарий</label>
+                    <textarea id="comment" rows="3" placeholder=""></textarea>
+                </div>
+                <button type="submit" class="submit-btn" data-lang-key="form-submit">Записаться</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#" aria-label="Instagram">📷</a>
+                <a href="#" aria-label="Facebook">👍</a>
+                <a href="#" aria-label="Telegram">✈️</a>
+            </div>
+            <p data-lang-key="footer-text">&copy; 2024 Barbershop. Все права защищены.</p>
+            <p data-lang-key="footer-address">г. Киев, ул. Крещатик, 1 | +380 (44) 123-45-67</p>
+        </div>
+    </footer>
+
+    <script>
+        // Translations
+        const translations = {
+            ru: {
+                'logo': 'BARBERSHOP',
+                'nav-about': 'О нас',
+                'nav-services': 'Услуги',
+                'nav-barbers': 'Барберы',
+                'nav-booking': 'Записаться',
+                'hero-title': 'Стиль и мастерство',
+                'hero-subtitle': 'Профессиональный уход за вашим образом',
+                'hero-cta': 'Записаться сейчас',
+                'about-title': 'О нашем барбершопе',
+                'about-subtitle': 'Традиции и современность',
+                'about-mission-title': 'Наша миссия',
+                'about-mission-text': 'Мы создаем уникальный опыт для каждого клиента, сочетая классические техники барберинга с современными тенденциями. Наша команда профессионалов превратит ваш визит в настоящее удовольствие.',
+                'about-experience-text': 'С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. Доверьте нам свой образ, и вы не пожалеете.',
+                'services-title': 'Наши услуги',
+                'services-subtitle': 'Качество по доступным ценам',
+                'service-1-name': 'Классическая стрижка',
+                'service-1-desc': 'Профессиональная мужская стрижка от опытных мастеров',
+                'service-2-name': 'Бритьё опасной бритвой',
+                'service-2-desc': 'Традиционное бритьё с горячим полотенцем',
+                'service-3-name': 'Моделирование бороды',
+                'service-3-desc': 'Создание и поддержание формы бороды',
+                'service-4-name': 'Стрижка + Борода',
+                'service-4-desc': 'Комплексный уход за образом',
+                'service-5-name': 'Детская стрижка',
+                'service-5-desc': 'Комфортная стрижка для самых маленьких',
+                'service-6-name': 'VIP-обслуживание',
+                'service-6-desc': 'Полный комплекс услуг премиум-класса',
+                'minutes': 'мин',
+                'barbers-title': 'Наши мастера',
+                'barbers-subtitle': 'Профессионалы своего дела',
+                'barber-1-name': 'Алексей Иванов',
+                'barber-1-exp': 'Опыт: 12 лет',
+                'barber-1-desc': 'Мастер классических и современных стрижек. Специализация: fade, undercut, classic cuts.',
+                'barber-2-name': 'Дмитрий Петров',
+                'barber-2-exp': 'Опыт: 8 лет',
+                'barber-2-desc': 'Эксперт по бородам и усам. Создает уникальные образы и стили для каждого клиента.',
+                'barber-3-name': 'Максим Сидоров',
+                'barber-3-exp': 'Опыт: 10 лет',
+                'barber-3-desc': 'Специалист по сложным стрижкам и креативным образам. Победитель барбер-конкурсов.',
+                'booking-title': 'Записаться на стрижку',
+                'booking-subtitle': 'Выберите удобное время',
+                'form-name': 'Ваше имя *',
+                'form-phone': 'Телефон *',
+                'form-email': 'Email',
+                'form-barber': 'Выберите барбера *',
+                'form-service': 'Выберите услугу *',
+                'form-date': 'Дата *',
+                'form-time': 'Время *',
+                'form-comment': 'Комментарий',
+                'form-submit': 'Записаться',
+                'form-select-barber': '-- Выберите --',
+                'form-select-service': '-- Выберите --',
+                'form-select-time': '-- Выберите --',
+                'footer-text': '© 2024 Barbershop. Все права защищены.',
+                'footer-address': 'г. Киев, ул. Крещатик, 1 | +380 (44) 123-45-67',
+                'btn-login': 'Войти',
+                'btn-register': 'Регистрация'
+            },
+            uk: {
+                'logo': 'BARBERSHOP',
+                'nav-about': 'Про нас',
+                'nav-services': 'Послуги',
+                'nav-barbers': 'Барбери',
+                'nav-booking': 'Записатися',
+                'hero-title': 'Стиль і майстерність',
+                'hero-subtitle': 'Професійний догляд за вашим образом',
+                'hero-cta': 'Записатися зараз',
+                'about-title': 'Про наш барбершоп',
+                'about-subtitle': 'Традиції та сучасність',
+                'about-mission-title': 'Наша місія',
+                'about-mission-text': 'Ми створюємо унікальний досвід для кожного клієнта, поєднуючи класичні техніки барберингу із сучасними тенденціями. Наша команда професіоналів перетворить ваш vizit у справжнє задоволення.',
+                'about-experience-text': 'Маючи понад 10-річний досвід роботи, ми знаємо все про чоловічий стиль і догляд. Довірте нам свій образ, і ви не пошкодуєте.',
+                'services-title': 'Наші послуги',
+                'services-subtitle': 'Якість за доступними цінами',
+                'service-1-name': 'Класична стрижка',
+                'service-1-desc': 'Професійна чоловіча стрижка від досвідчених майстрів',
+                'service-2-name': 'Гоління небезпечною бритвою',
+                'service-2-desc': 'Традиційне гоління з гарячим рушником',
+                'service-3-name': 'Моделювання бороди',
+                'service-3-desc': 'Створення та підтримання форми бороди',
+                'service-4-name': 'Стрижка + Борода',
+                'service-4-desc': 'Комплексний догляд за образом',
+                'service-5-name': 'Дитяча стрижка',
+                'service-5-desc': 'Комфортна стрижка для найменших',
+                'service-6-name': 'VIP-обслуговування',
+                'service-6-desc': 'Повний комплекс послуг преміум-класу',
+                'minutes': 'хв',
+                'barbers-title': 'Наші майстри',
+                'barbers-subtitle': 'Професіонали своєї справи',
+                'barber-1-name': 'Олексій Іванов',
+                'barber-1-exp': 'Досвід: 12 років',
+                'barber-1-desc': 'Майстер класичних і сучасних стрижок. Спеціалізація: fade, undercut, classic cuts.',
+                'barber-2-name': 'Дмитро Петров',
+                'barber-2-exp': 'Досвід: 8 років',
+                'barber-2-desc': 'Експерт з бород та вусів. Створює унікальні образи та стилі для кожного клієнта.',
+                'barber-3-name': 'Максим Сидоров',
+                'barber-3-exp': 'Досвід: 10 років',
+                'barber-3-desc': 'Спеціаліст зі складних стрижок та креативних образів. Переможець барбер-конкурсів.',
+                'booking-title': 'Записатися на стрижку',
+                'booking-subtitle': 'Оберіть зручний час',
+                'form-name': "Ваше ім'я *",
+                'form-phone': 'Телефон *',
+                'form-email': 'Email',
+                'form-barber': 'Оберіть барбера *',
+                'form-service': 'Оберіть послугу *',
+                'form-date': 'Дата *',
+                'form-time': 'Час *',
+                'form-comment': 'Коментар',
+                'form-submit': 'Записатися',
+                'form-select-barber': '-- Оберіть --',
+                'form-select-service': '-- Оберіть --',
+                'form-select-time': '-- Оберіть --',
+                'footer-text': '© 2024 Barbershop. Усі права захищені.',
+                'footer-address': 'м. Київ, вул. Хрещатик, 1 | +380 (44) 123-45-67',
+                'btn-login': 'Увійти',
+                'btn-register': 'Реєстрація'
+            },
+            en: {
+                'logo': 'BARBERSHOP',
+                'nav-about': 'About',
+                'nav-services': 'Services',
+                'nav-barbers': 'Barbers',
+                'nav-booking': 'Book',
+                'hero-title': 'Style & Mastery',
+                'hero-subtitle': 'Professional care for your image',
+                'hero-cta': 'Book Now',
+                'about-title': 'About Our Barbershop',
+                'about-subtitle': 'Tradition and Modernity',
+                'about-mission-title': 'Our Mission',
+                'about-mission-text': 'We create a unique experience for each client, combining classic barbering techniques with modern trends. Our team of professionals will turn your visit into a real pleasure.',
+                'about-experience-text': 'With more than 10 years of experience, we know everything about men\'s style and care. Trust us with your image, and you won\'t regret it.',
+                'services-title': 'Our Services',
+                'services-subtitle': 'Quality at Affordable Prices',
+                'service-1-name': 'Classic Haircut',
+                'service-1-desc': 'Professional men\'s haircut from experienced masters',
+                'service-2-name': 'Straight Razor Shave',
+                'service-2-desc': 'Traditional shave with hot towel',
+                'service-3-name': 'Beard Grooming',
+                'service-3-desc': 'Creating and maintaining beard shape',
+                'service-4-name': 'Haircut + Beard',
+                'service-4-desc': 'Comprehensive image care',
+                'service-5-name': 'Kids Haircut',
+                'service-5-desc': 'Comfortable haircut for the little ones',
+                'service-6-name': 'VIP Service',
+                'service-6-desc': 'Full premium service package',
+                'minutes': 'min',
+                'barbers-title': 'Our Masters',
+                'barbers-subtitle': 'Professionals at Their Craft',
+                'barber-1-name': 'Alexey Ivanov',
+                'barber-1-exp': 'Experience: 12 years',
+                'barber-1-desc': 'Master of classic and modern haircuts. Specialization: fade, undercut, classic cuts.',
+                'barber-2-name': 'Dmitry Petrov',
+                'barber-2-exp': 'Experience: 8 years',
+                'barber-2-desc': 'Beard and mustache expert. Creates unique looks and styles for each client.',
+                'barber-3-name': 'Maxim Sidorov',
+                'barber-3-exp': 'Experience: 10 years',
+                'barber-3-desc': 'Specialist in complex haircuts and creative looks. Barber competition winner.',
+                'booking-title': 'Book a Haircut',
+                'booking-subtitle': 'Choose a convenient time',
+                'form-name': 'Your Name *',
+                'form-phone': 'Phone *',
+                'form-email': 'Email',
+                'form-barber': 'Choose Barber *',
+                'form-service': 'Choose Service *',
+                'form-date': 'Date *',
+                'form-time': 'Time *',
+                'form-comment': 'Comment',
+                'form-submit': 'Book Now',
+                'form-select-barber': '-- Select --',
+                'form-select-service': '-- Select --',
+                'form-select-time': '-- Select --',
+                'footer-text': '© 2024 Barbershop. All rights reserved.',
+                'footer-address': 'Kyiv, Khreshchatyk St., 1 | +380 (44) 123-45-67',
+                'btn-login': 'Login',
+                'btn-register': 'Sign Up'
+            }
+        };
+
+        let currentLang = 'ru';
+
+        // Language Switcher
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLang = btn.getAttribute('data-lang');
+                updateLanguage();
+            });
+        });
+
+        function updateLanguage() {
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[currentLang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translations[currentLang][key];
+                    } else if (el.tagName === 'OPTION') {
+                        el.textContent = translations[currentLang][key];
+                    } else {
+                        el.textContent = translations[currentLang][key];
+                    }
+                }
+            });
+        }
+
+        // Mobile Menu
+        const burger = document.getElementById('burger');
+        const navRight = document.getElementById('navRight');
+
+        burger.addEventListener('click', () => {
+            navRight.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a, .auth-btn').forEach(link => {
+            link.addEventListener('click', () => {
+                navRight.classList.remove('active');
+            });
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form Handling
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                barber: document.getElementById('barber').value,
+                service: document.getElementById('service').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                comment: document.getElementById('comment').value
+            };
+
+            console.log('Booking Data:', formData);
+            
+            // Here you would send data to Django backend
+            // fetch('/api/bookings/', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // })
+
+            const messages = {
+                ru: 'Спасибо! Ваша запись оформлена. Мы свяжемся с вами в ближайшее время.',
+                uk: 'Дякуємо! Ваш запис оформлено. Ми зв\'яжемося з вами найближчим часом.',
+                en: 'Thank you! Your booking is confirmed. We will contact you soon.'
+            };
+
+            alert(messages[currentLang]);
+            bookingForm.reset();
+        });
+
+        // Set minimum date for booking (today)
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        // Add hover effect to service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
