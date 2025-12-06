@@ -229,7 +229,7 @@
                 <a href="#" aria-label="Telegram">✈️</a>
             </div>
             <p data-lang-key="footer-text">&copy; 2024 Barbershop. Все права защищены.</p>
-            <p data-lang-key="footer-address">г. Киев, ул. Крещатик, 1 | +380 (44) 123-45-67</p>
+            <p data-lang-key="footer-address">г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx</p>
         </div>
     </footer>
 
@@ -291,7 +291,7 @@
                 'form-select-service': '-- Выберите --',
                 'form-select-time': '-- Выберите --',
                 'footer-text': '© 2024 Barbershop. Все права защищены.',
-                'footer-address': 'г. Киев, ул. Крещатик, 1 | +380 (44) 123-45-67',
+                'footer-address': 'г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx',
                 'btn-login': 'Войти',
                 'btn-register': 'Регистрация'
             },
@@ -350,7 +350,7 @@
                 'form-select-service': '-- Оберіть --',
                 'form-select-time': '-- Оберіть --',
                 'footer-text': '© 2024 Barbershop. Усі права захищені.',
-                'footer-address': 'м. Київ, вул. Хрещатик, 1 | +380 (44) 123-45-67',
+                'footer-address': 'м. Київ, вул. Хрещатик, 1 | +380 (xx) xxx-xx-xx',
                 'btn-login': 'Увійти',
                 'btn-register': 'Реєстрація'
             },
@@ -409,7 +409,7 @@
                 'form-select-service': '-- Select --',
                 'form-select-time': '-- Select --',
                 'footer-text': '© 2024 Barbershop. All rights reserved.',
-                'footer-address': 'Kyiv, Khreshchatyk St., 1 | +380 (44) 123-45-67',
+                'footer-address': 'Kyiv, Khreshchatyk St., 1 | +380 (xx) xxx-xx-xx',
                 'btn-login': 'Login',
                 'btn-register': 'Sign Up'
             }
@@ -549,13 +549,12 @@
             });
         });
 
-        // Parallax effect for hero section
+        // Parallax effect for hero background without shifting the content over other sections
+        const hero = document.querySelector('.hero');
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
+            if (!hero) return;
+            const scrolled = Math.min(window.pageYOffset, hero.offsetHeight);
+            hero.style.backgroundPosition = `center calc(50% + ${scrolled * 0.25}px)`;
         });
     </script>
 </body>

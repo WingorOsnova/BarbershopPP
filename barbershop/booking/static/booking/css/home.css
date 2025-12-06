@@ -169,7 +169,7 @@ nav {
     align-items: center;
     justify-content: center;
     background: linear-gradient(rgba(15, 15, 15, 0.7), rgba(15, 15, 15, 0.7)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%231a1a1a" width="1200" height="600"/><g opacity="0.1"><circle cx="200" cy="150" r="100" fill="%23d4a574"/><circle cx="800" cy="400" r="150" fill="%23d4a574"/><circle cx="1000" cy="200" r="80" fill="%23d4a574"/></g></svg>');
+                url('barbershop.jpeg');
     background-size: cover;
     background-position: center;
     position: relative;
