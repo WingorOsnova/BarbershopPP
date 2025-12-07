@@ -11,9 +11,10 @@ class Barber(models.Model):
     return self.name
 
 class Service(models.Model):
+  icon = models.CharField(max_length=10)
   name = models.CharField(max_length=100)
   description = models.TextField(blank=True)
-  price = models.DecimalField(max_digits=10, decimal_places=2)
+  price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='PRICE ₴')
   duration_minutes = models.PositiveIntegerField(default=30)
 
   def __str__(self):

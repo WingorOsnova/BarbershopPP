@@ -9,7 +9,7 @@ class AdminBarber(admin.ModelAdmin):
 
 @admin.register(Service)
 class AdminService(admin.ModelAdmin):
-  list_display = ('name', 'price', 'duration_minutes')
+  list_display = ('icon', 'name', 'price', 'duration_minutes')
   search_fields = ('name',)
 
 @admin.register(Booking)
