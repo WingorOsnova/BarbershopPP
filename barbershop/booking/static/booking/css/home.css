@@ -651,6 +651,30 @@ section {
     box-shadow: 0 0 10px rgba(212, 165, 116, 0.2);
 }
 
+.form-errors,
+.field-error {
+    margin-top: 0.6rem;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 99, 99, 0.08);
+    border: 1px solid rgba(255, 99, 99, 0.35);
+    border-radius: 6px;
+    color: #ffc7c7;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.form-errors span,
+.field-error span {
+    display: block;
+}
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.2);
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;

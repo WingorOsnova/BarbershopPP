@@ -108,70 +108,108 @@
         <h2 class="section-title fade-in" data-lang-key="booking-title">Записаться на стрижку</h2>
         <p class="section-subtitle fade-in" data-lang-key="booking-subtitle">Выберите удобное время</p>
         <div class="booking-container fade-in">
-            <form id="bookingForm">
-                <div class="form-group">
-                    <label data-lang-key="form-name">Ваше имя *</label>
-                    <input type="text" id="name" required placeholder="">
+            <form id="bookingForm" method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        {% for error in form.non_field_errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-group{% if form.client_name.errors %} has-error{% endif %}">
+                    <label data-lang-key="form-name">{{ form.client_name.label}}</label>
+                    {{ form.client_name }}
+                    {% if form.client_name.errors %}
+                        <div class="field-error">
+                            {% for error in form.client_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label data-lang-key="form-phone">Телефон *</label>
-                        <input type="tel" id="phone" required placeholder="+380">
+                    <div class="form-group{% if form.client_phone.errors %} has-error{% endif %}">
+                        <label data-lang-key="form-phone">{{ form.client_phone.label }}</label>
+                        {{ form.client_phone }}
+                        {% if form.client_phone.errors %}
+                            <div class="field-error">
+                                {% for error in form.client_phone.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="form-group">
-                        <label data-lang-key="form-email">Email</label>
-                        <input type="email" id="email" placeholder="">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label data-lang-key="form-barber">Выберите барбера *</label>
-                        <select id="barber" required>
-                            <option value="" data-lang-key="form-select-barber">-- Выберите --</option>
-                            <option value="1" data-lang-key="barber-1-name">Алексей Иванов</option>
-                            <option value="2" data-lang-key="barber-2-name">Дмитрий Петров</option>
-                            <option value="3" data-lang-key="barber-3-name">Максим Сидоров</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label data-lang-key="form-service">Выберите услугу *</label>
-                        <select id="service" required>
-                            <option value="" data-lang-key="form-select-service">-- Выберите --</option>
-                            <option value="1" data-lang-key="service-1-name">Классическая стрижка</option>
-                            <option value="2" data-lang-key="service-2-name">Бритьё опасной бритвой</option>
-                            <option value="3" data-lang-key="service-3-name">Моделирование бороды</option>
-                            <option value="4" data-lang-key="service-4-name">Стрижка + Борода</option>
-                            <option value="5" data-lang-key="service-5-name">Детская стрижка</option>
-                            <option value="6" data-lang-key="service-6-name">VIP-обслуживание</option>
-                        </select>
+                    <div class="form-group{% if form.client_email.errors %} has-error{% endif %}">
+                        <label data-lang-key="form-email">{{ form.client_email.label }}</label>
+                        {{ form.client_email }}
+                        {% if form.client_email.errors %}
+                            <div class="field-error">
+                                {% for error in form.client_email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label data-lang-key="form-date">Дата *</label>
-                        <input type="date" id="date" required>
+                    <div class="form-group{% if form.barber.errors %} has-error{% endif %}">
+                        <label data-lang-key="form-barber">{{ form.barber.label }}</label>
+                        {{ form.barber }}
+                        {% if form.barber.errors %}
+                            <div class="field-error">
+                                {% for error in form.barber.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
-                    <div class="form-group">
-                        <label data-lang-key="form-time">Время *</label>
-                        <select id="time" required>
-                            <option value="" data-lang-key="form-select-time">-- Выберите --</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                        </select>
+                    <div class="form-group{% if form.service.errors %} has-error{% endif %}">
+                        <label data-lang-key="form-service">{{ form.service.label}}</label>
+                        {{ form.service }}
+                        {% if form.service.errors %}
+                            <div class="field-error">
+                                {% for error in form.service.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-                <div class="form-group">
-                    <label data-lang-key="form-comment">Комментарий</label>
-                    <textarea id="comment" rows="3" placeholder=""></textarea>
+                <div class="form-row">
+                    <div class="form-group{% if form.booking_date.errors %} has-error{% endif %}">
+                        <label data-lang-key="form-date">{{ form.booking_date.label }}</label>
+                        {{ form.booking_date }}
+                        {% if form.booking_date.errors %}
+                            <div class="field-error">
+                                {% for error in form.booking_date.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group{% if form.booking_time.errors %} has-error{% endif %}">
+                        <label>Время сеанса *</label>
+                        {{ form.booking_time }}
+                        {% if form.booking_time.errors %}
+                            <div class="field-error">
+                                {% for error in form.booking_time.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group{% if form.message.errors %} has-error{% endif %}">
+                    <label data-lang-key="form-comment">{{form.message.label}}</label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <div class="field-error">
+                            {% for error in form.message.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 <button type="submit" class="submit-btn" data-lang-key="form-submit">Записаться</button>
             </form>
@@ -516,7 +554,7 @@
         });
 
         // Form Handling
-        const bookingForm = document.getElementById('bookingForm');
+        /*const bookingForm = document.getElementById('bookingForm');
         bookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -548,12 +586,35 @@
 
             alert(messages[currentLang]);
             bookingForm.reset();
-        });
+        });*/
 
         // Set minimum date for booking (today)
         const dateInput = document.getElementById('date');
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
+
+        // Подгрузка свободных слотов: перезагружаем секцию с выбранными барбером и датой
+        const barberSelect = document.getElementById('barber');
+        const timeSelect = document.getElementById('time');
+
+        const reloadWithFilters = () => {
+            if (!barberSelect || !dateInput) return;
+            const barber = barberSelect.value;
+            const date = dateInput.value;
+            if (!barber || !date) return;
+            const params = new URLSearchParams({
+                barber,
+                booking_date: date,
+            });
+            window.location.href = `${window.location.pathname}?${params.toString()}#booking`;
+        };
+
+        if (barberSelect) {
+            barberSelect.addEventListener('change', reloadWithFilters);
+        }
+        if (dateInput) {
+            dateInput.addEventListener('change', reloadWithFilters);
+        }
 
         // Add hover effect to service cards
         document.querySelectorAll('.service-card').forEach(card => {
