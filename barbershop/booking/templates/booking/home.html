@@ -213,6 +213,10 @@
                         </div>
                     {% endif %}
                 </div>
+                <div id="formStatus" class="form-status" style="display:none;">
+                    <span class="form-status__text"></span>
+                    <button type="button" class="form-status__close" aria-label="Закрыть уведомление">×</button>
+                </div>
                 <button type="submit" class="submit-btn" data-lang-key="form-submit">Записаться</button>
             </form>
         </div>
@@ -555,70 +559,144 @@
             observer.observe(el);
         });
 
-        // Form Handling
-        /*const bookingForm = document.getElementById('bookingForm');
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                barber: document.getElementById('barber').value,
-                service: document.getElementById('service').value,
-                date: document.getElementById('date').value,
-                time: document.getElementById('time').value,
-                comment: document.getElementById('comment').value
-            };
+        // Form Handling + AJAX (без перезагрузки)
+        const bookingForm = document.getElementById('bookingForm');
+        const formStatus = document.getElementById('formStatus');
+        const formStatusText = formStatus?.querySelector('.form-status__text');
+        const formStatusClose = formStatus?.querySelector('.form-status__close');
+        const barberSelect = document.getElementById('barber');
+        const dateInput = document.getElementById('date');
+        const timeSelect = document.getElementById('time');
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.value;
+        let statusTimer = null;
 
-            console.log('Booking Data:', formData);
-            
-            // Here you would send data to Django backend
-            // fetch('/api/bookings/', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(formData)
-            // })
+        const setStatus = (text, ok = false) => {
+            if (!formStatus) {
+                if (text) alert(text);
+                return;
+            }
+            formStatus.classList.remove('success', 'error', 'show', 'hide');
+            formStatus.classList.add(ok ? 'success' : 'error');
+            if (text) {
+                formStatus.style.display = 'flex';
+                formStatus.classList.add('show');
+            }
+            if (formStatusText) formStatusText.textContent = text || '';
 
-            const messages = {
-                ru: 'Спасибо! Ваша запись оформлена. Мы свяжемся с вами в ближайшее время.',
-                uk: 'Дякуємо! Ваш запис оформлено. Ми зв\'яжемося з вами найближчим часом.',
-                en: 'Thank you! Your booking is confirmed. We will contact you soon.'
-            };
+            if (statusTimer) clearTimeout(statusTimer);
+            if (text) {
+                statusTimer = setTimeout(() => setStatus('', ok), 5000);
+            } else {
+                formStatus.classList.add('hide');
+                setTimeout(() => {
+                    formStatus.style.display = 'none';
+                    formStatus.classList.remove('hide');
+                }, 200);
+            }
+        };
 
-            alert(messages[currentLang]);
-            bookingForm.reset();
-        });*/
+        if (formStatusClose) {
+            formStatusClose.addEventListener('click', () => setStatus(''));
+        }
 
         // Set minimum date for booking (today)
-        const dateInput = document.getElementById('date');
         if (dateInput) {
             const today = new Date().toISOString().split('T')[0];
             dateInput.setAttribute('min', today);
         }
-        
 
-        // Подгрузка свободных слотов: перезагружаем секцию с выбранными барбером и датой
-        const barberSelect = document.getElementById('barber');
-        const timeSelect = document.getElementById('time');
-
-        const reloadWithFilters = () => {
-            if (!barberSelect || !dateInput) return;
+        async function loadSlots() {
+            if (!barberSelect || !dateInput || !timeSelect) return;
             const barber = barberSelect.value;
             const date = dateInput.value;
-            if (!barber || !date) return;
-            const params = new URLSearchParams({
-                barber,
-                booking_date: date,
-            });
-            window.location.href = `${window.location.pathname}?${params.toString()}#booking`;
-        };
+            const currentValue = timeSelect.dataset.selected || timeSelect.value || '';
 
-        if (barberSelect) {
-            barberSelect.addEventListener('change', reloadWithFilters);
+            if (!barber || !date) {
+                timeSelect.classList.remove('select-loading');
+                timeSelect.innerHTML = '<option value="">Сначала выберите барбера и дату</option>';
+                timeSelect.dataset.selected = '';
+                return;
+            }
+
+            timeSelect.innerHTML = '<option value="">Загрузка...</option>';
+            timeSelect.classList.add('select-loading');
+
+            try {
+                const params = new URLSearchParams({ barber, booking_date: date });
+                const res = await fetch(`/api/available-slots/?${params.toString()}`);
+                const data = await res.json();
+                const slots = data.slots || [];
+
+                if (!slots.length) {
+                    timeSelect.innerHTML = '<option value="">Нет свободных слотов</option>';
+                    timeSelect.dataset.selected = '';
+                    return;
+                }
+
+                timeSelect.innerHTML = '<option value="">Выберите время</option>' +
+                    slots.map(t => `<option value="${t}">${t}</option>`).join('');
+
+                const preserved = slots.includes(currentValue) ? currentValue : '';
+                timeSelect.value = preserved;
+                timeSelect.dataset.selected = preserved;
+            } catch (err) {
+                console.error(err);
+                timeSelect.innerHTML = '<option value="">Ошибка загрузки</option>';
+            } finally {
+                timeSelect.classList.remove('select-loading');
+            }
         }
-        if (dateInput) {
-            dateInput.addEventListener('change', reloadWithFilters);
+
+        if (timeSelect) {
+            timeSelect.dataset.selected = timeSelect.value || '';
+            timeSelect.addEventListener('change', () => {
+                timeSelect.dataset.selected = timeSelect.value;
+            });
+        }
+
+        if (barberSelect) barberSelect.addEventListener('change', loadSlots);
+        if (dateInput) dateInput.addEventListener('change', loadSlots);
+        loadSlots();
+
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                setStatus('');
+
+                if (!csrfToken) {
+                    bookingForm.submit();
+                    return;
+                }
+
+                const formData = new FormData(bookingForm);
+
+                try {
+                    const res = await fetch('/api/book/', {
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': csrfToken },
+                        body: formData,
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok || !data.ok) {
+                        const errors = data.errors || {};
+                        const msg = Object.values(errors).flat().join(' ') || 'Не удалось создать запись.';
+                        setStatus(msg, false);
+                        return;
+                    }
+
+                    setStatus(data.message || 'Запись создана.', true);
+                    bookingForm.reset();
+                    if (timeSelect) {
+                        timeSelect.dataset.selected = '';
+                    }
+                    await loadSlots();
+                } catch (err) {
+                    console.error(err);
+                    setStatus('Ошибка отправки. Попробуйте ещё раз.', false);
+                }
+            });
         }
 
         // Add hover effect to service cards
