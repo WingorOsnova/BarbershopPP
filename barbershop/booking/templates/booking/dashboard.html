@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Barbershop</title>
+    <link rel="stylesheet" href="{% static 'booking/css/dashboard.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
+            <nav class="header-nav">
+                <a href="{% url 'home' %}" class="nav-btn">На главную</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Личный кабинет</h1>
+            <p>Ваши записи и управление визитами</p>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <h2>👤 Профиль</h2>
+            <div class="profile-info">
+                <p><strong>Вы вошли как:</strong> {{ request.user.username }}</p>
+                {% if request.user.email %}
+                <p><strong>Email:</strong> {{ request.user.email }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Upcoming Bookings -->
+        <section class="section">
+            <h2 class="section-title">📅 Мои будущие записи</h2>
+            {% if upcoming_bookings %}
+                <div class="bookings-grid">
+                    {% for b in upcoming_bookings %}
+                    <div class="booking-card">
+                        <div class="booking-header">
+                            <div class="booking-service">{{ b.service.name }}</div>
+                            <span class="booking-status status-{{ b.status }}">{{ b.get_status_display }}</span>
+                        </div>
+                        <div class="booking-details">
+                            <div class="booking-detail">
+                                <span class="icon">👨‍🦲</span>
+                                <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">📆</span>
+                                <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">🕐</span>
+                                <span>Время: <strong>{{ b.booking_time }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">💰</span>
+                                <span>Цена: <strong>{{ b.service.price }} ₴</strong></span>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <button class="btn btn-secondary">Перенести</button>
+                            <button class="btn btn-danger">Отменить</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">
+                    📭 Пока нет будущих записей.<br>
+                    <small>Самое время записаться на стрижку!</small>
+                </p>
+            {% endif %}
+        </section>
+
+        <!-- Past Bookings -->
+        <section class="section">
+            <h2 class="section-title">📜 Прошлые записи</h2>
+            {% if past_bookings %}
+                <div class="bookings-grid">
+                    {% for b in past_bookings %}
+                    <div class="booking-card past">
+                        <div class="booking-header">
+                            <div class="booking-service">{{ b.service.name }}</div>
+                            <span class="booking-status status-{{ b.status }}">{{ b.get_status_display }}</span>
+                        </div>
+                        <div class="booking-details">
+                            <div class="booking-detail">
+                                <span class="icon">👨‍🦲</span>
+                                <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">📆</span>
+                                <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">🕐</span>
+                                <span>Время: <strong>{{ b.booking_time }}</strong></span>
+                            </div>
+                            <div class="booking-detail">
+                                <span class="icon">💰</span>
+                                <span>Цена: <strong>{{ b.service.price }} ₴</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">
+                    📭 Прошлых записей пока нет.
+                </p>
+            {% endif %}
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h3>✂️ Хотите записаться снова?</h3>
+            <p>Выберите удобное время и любимого мастера</p>
+            <a href="{% url 'home' %}#booking" class="cta-btn">Записаться сейчас</a>
+        </section>
+    </main>
+</body>
+</html>

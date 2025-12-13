@@ -21,6 +21,12 @@ def generate_slot(date, start=WORK_DAY_START, end=WORK_DAY_END, step=BASE_SLOT_M
 def get_available_slots(barber, date):
     all_slots = generate_slot(date)
 
+    # Убираем прошедшие слоты, если дата — сегодня
+    today = datetime.date.today()
+    if date == today:
+        now_time = datetime.datetime.now().time()
+        all_slots = [t for t in all_slots if t > now_time]
+
     booked_times_qs = Booking.objects.filter(
         barber=barber,
         booking_date=date,

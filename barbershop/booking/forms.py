@@ -1,6 +1,14 @@
-from django import forms
 import datetime
+
+from django import forms
+from django.core.exceptions import ValidationError
+
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+
 from .models import Booking
+from .utils import get_available_slots
+
 
 class BookingForm(forms.ModelForm):
   booking_time = forms.TimeField(
@@ -120,3 +128,27 @@ class BookingForm(forms.ModelForm):
       slot_choices = [('', 'Нет свободных слотов на выбранную дату')]
 
     self.fields['booking_time'].widget.choices = slot_choices
+  
+  def clean(self):
+    cleaned_data = super().clean()
+    barber = cleaned_data.get('barber')
+    booking_date = cleaned_data.get('booking_date')
+    booking_time = cleaned_data.get('booking_time')
+
+    if not barber or not booking_date or not booking_time:
+        return cleaned_data
+
+    available = get_available_slots(barber, booking_date)
+    if booking_time not in available:
+        raise ValidationError("Это время уже занято. Выберите другое.")
+
+    return cleaned_data
+
+class RegisterForm(UserCreationForm):
+  class Meta:
+    model = User
+    fields = ['username', 'password1', 'password2']
+
+
+class LoginForm(AuthenticationForm):
+  pass

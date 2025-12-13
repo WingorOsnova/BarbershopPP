@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #d4a574;
+    --dark: #1a1a1a;
+    --darker: #0f0f0f;
+    --light: #f5f5f5;
+    --accent: #c89456;
+    --error: #ff6b6b;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--darker);
+    color: var(--light);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 100px,
+            rgba(212, 165, 116, 0.02) 100px,
+            rgba(212, 165, 116, 0.02) 101px
+        );
+    pointer-events: none;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo h1 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+}
+
+.logo p {
+    color: #999;
+    font-size: 0.95rem;
+}
+
+.auth-card {
+    background: var(--dark);
+    border: 1px solid rgba(212, 165, 116, 0.2);
+    border-radius: 10px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.auth-card h2 {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: #999;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* Django form errors */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+.errorlist li {
+    color: var(--error);
+    font-size: 0.85rem;
+    padding: 0.3rem 0;
+}
+
+/* Non-field errors */
+form > .errorlist {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid var(--error);
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+form > .errorlist li {
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--darker);
+    border: 1px solid rgba(212, 165, 116, 0.3);
+    color: var(--light);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(212, 165, 116, 0.2);
+}
+
+.form-group input.error {
+    border-color: var(--error);
+}
+
+/* Style Django-rendered inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 1rem;
+    background: var(--darker);
+    border: 1px solid rgba(212, 165, 116, 0.3);
+    color: var(--light);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(212, 165, 116, 0.2);
+}
+
+/* Help text for password requirements */
+.helptext {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    line-height: 1.4;
+}
+
+.helptext ul {
+    margin: 0.5rem 0;
+    padding-left: 1.2rem;
+}
+
+.helptext li {
+    margin: 0.2rem 0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.submit-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 165, 116, 0.1);
+}
+
+.auth-links p {
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.auth-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.auth-links a:hover {
+    color: var(--accent);
+    transform: translateX(-3px);
+}
+
+.back-home {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.back-home a {
+    color: #999;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.back-home a:hover {
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    body {
+        padding: 1rem;
+    }
+
+    .auth-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .logo h1 {
+        font-size: 2rem;
+    }
+
+    .auth-card h2 {
+        font-size: 1.5rem;
+    }
+}
