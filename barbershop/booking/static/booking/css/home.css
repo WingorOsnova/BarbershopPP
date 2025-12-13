@@ -820,3 +820,35 @@ footer {
     opacity: 1;
     transform: translateY(0);
 }
+/* Обёртка для поля даты */
+.date-field {
+    position: relative;
+  }
+  
+  /* Даём место под иконку справа */
+  .date-field #date {
+    padding-right: 44px;
+  }
+  
+  /* Скрываем нативную иконку (Chrome/Safari/Edge) */
+  .date-field #date::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    width: 44px;
+    height: 100%;
+  }
+  
+  /* Наша иконка поверх (белая) */
+  .date-field::after {
+    content: "🗓️";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 18px;
+    opacity: 0.9;
+  }
+  

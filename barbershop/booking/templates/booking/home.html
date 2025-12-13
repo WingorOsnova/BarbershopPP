@@ -179,7 +179,9 @@
                 <div class="form-row">
                     <div class="form-group{% if form.booking_date.errors %} has-error{% endif %}">
                         <label data-lang-key="form-date">{{ form.booking_date.label }}</label>
-                        {{ form.booking_date }}
+                        <div class="date-field">
+                            {{ form.booking_date }}
+                        </div>
                         {% if form.booking_date.errors %}
                             <div class="field-error">
                                 {% for error in form.booking_date.errors %}
@@ -590,8 +592,11 @@
 
         // Set minimum date for booking (today)
         const dateInput = document.getElementById('date');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+        }
+        
 
         // Подгрузка свободных слотов: перезагружаем секцию с выбранными барбером и датой
         const barberSelect = document.getElementById('barber');
