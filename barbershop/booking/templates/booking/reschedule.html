@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перенос записи - Barbershop</title>
+    <link rel="stylesheet" href="{% static 'booking/css/dashboard.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
+            <nav class="header-nav">
+                <a href="{% url 'dashboard' %}" class="nav-btn">В кабинет</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="reschedule-main">
+        <div class="page-header">
+            <h1>Перенос записи</h1>
+            <p>Выберите новую дату и время у барбера {{ booking.barber.name }}</p>
+        </div>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags|default:'info' }}">
+                        <span class="message-icon">
+                            {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}⚠️{% elif 'warning' in message.tags %}⚠️{% else %}ℹ️{% endif %}
+                        </span>
+                        <span class="message-text">{{ message }}</span>
+                        <button type="button" class="message-close" aria-label="Закрыть" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                // Авто-скрытие уведомлений через 4 секунды
+                document.querySelectorAll('.messages .message').forEach(function (msg) {
+                    setTimeout(function () {
+                        msg.classList.add('message-hide');
+                        msg.addEventListener('animationend', function () { msg.remove(); }, { once: true });
+                    }, 4000);
+                });
+            </script>
+        {% endif %}
+
+        <div class="reschedule-wrapper">
+            <div class="booking-summary">
+                <div>
+                    <p class="label">Барбер</p>
+                    <p class="value">{{ booking.barber.name }}</p>
+                </div>
+                <div>
+                    <p class="label">Услуга</p>
+                    <p class="value">{{ booking.service.name }} — {{ booking.service.price }} ₴</p>
+                </div>
+                <div>
+                    <p class="label">Текущая дата</p>
+                    <p class="value">{{ booking.booking_date|date:"d.m.Y" }}</p>
+                </div>
+                <div>
+                    <p class="label">Текущее время</p>
+                    <p class="value">{{ booking.booking_time|time:"H:i" }}</p>
+                </div>
+                <div>
+                    <p class="label">Статус</p>
+                    <p class="value">{{ booking.get_status_display }}</p>
+                </div>
+            </div>
+
+            <form method="post" action="{% url 'booking_reschedule' booking.id %}" class="reschedule-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="booking_date">Новая дата</label>
+                        <input type="date" id="booking_date" name="booking_date" min="{{ min_date }}" value="{{ selected_date|date:'Y-m-d' }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Мастер</label>
+                        <div class="readonly-input">{{ booking.barber.name }}</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Доступные слоты</label>
+                    <div id="slotGrid" class="slot-grid">
+                        {% if available_slots %}
+                            {% for slot in available_slots %}
+                                <input type="radio" id="slot-{{ forloop.counter }}" name="booking_time" value="{{ slot|time:'H:i' }}" required>
+                                <label for="slot-{{ forloop.counter }}" class="slot-card">{{ slot|time:"H:i" }}</label>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <p id="slotStatus" class="muted">
+                        {% if available_slots %}
+                            Выберите время.
+                        {% elif selected_date %}
+                            На выбранную дату нет свободных слотов. Попробуйте другую дату.
+                        {% else %}
+                            Выберите дату, чтобы увидеть свободное время.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Назад</a>
+                    <button type="submit" class="btn btn-success btn-reschedule">Перенести</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            const dateInput = document.getElementById('booking_date');
+            const slotGrid = document.getElementById('slotGrid');
+            const slotStatus = document.getElementById('slotStatus');
+            const barberId = '{{ booking.barber.id }}';
+            const apiUrl = '{% url "available_slots_api" %}';
+
+            function setStatus(text) {
+                if (!slotStatus) return;
+                slotStatus.textContent = text || '';
+            }
+
+            function renderSlots(slots) {
+                if (!slotGrid) return;
+                slotGrid.innerHTML = '';
+                if (!slots || !slots.length) {
+                    setStatus('На выбранную дату нет свободных слотов. Попробуйте другую дату.');
+                    return;
+                }
+                setStatus('');
+                slots.forEach((slot, idx) => {
+                    const id = `slot-${idx + 1}`;
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.id = id;
+                    input.name = 'booking_time';
+                    input.value = slot;
+                    input.required = true;
+                    if (idx === 0) input.checked = true;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = id;
+                    label.className = 'slot-card';
+                    label.textContent = slot;
+
+                    slotGrid.appendChild(input);
+                    slotGrid.appendChild(label);
+                });
+            }
+
+            function fetchSlots(date) {
+                if (!date) {
+                    setStatus('Выберите дату, чтобы увидеть свободное время.');
+                    renderSlots([]);
+                    return;
+                }
+                setStatus('Загружаем свободные слоты...');
+                fetch(`${apiUrl}?barber=${encodeURIComponent(barberId)}&booking_date=${encodeURIComponent(date)}`)
+                    .then(res => res.ok ? res.json() : Promise.reject())
+                    .then(data => renderSlots(data.slots || []))
+                    .catch(() => setStatus('Не удалось загрузить слоты. Попробуйте позже.'));
+            }
+
+            dateInput?.addEventListener('change', (e) => fetchSlots(e.target.value));
+        })();
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 class Barber(models.Model):
   name = models.CharField(max_length=100)
@@ -43,12 +44,14 @@ class Booking(models.Model):
   STATUS_CONFIRMED = 'confirmed'
   STATUS_CANCELED = 'canceled'
   STATUS_COMPLETED = 'completed'
+  STATUS_NO_SHOW = 'no_show'
 
   STATUS_CHOICES = [
     (STATUS_PENDING, 'В ожидание'),
     (STATUS_CONFIRMED, 'Подтвержденно'),
     (STATUS_CANCELED, 'Отмененно'),
     (STATUS_COMPLETED, 'Выполненно'),
+    (STATUS_NO_SHOW, 'Не явился'),
   ]
 
   status = models.CharField(
@@ -60,3 +63,11 @@ class Booking(models.Model):
 
   def __str__(self):
     return f"{self.client_name} - {self.barber.name} - {self.service.name} - {self.booking_date}"
+
+
+class UserProfile(models.Model):
+  user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
+  phone = models.CharField(max_length=20, blank=True)
+
+  def __str__(self):
+    return f"Профиль {self.user.username}"

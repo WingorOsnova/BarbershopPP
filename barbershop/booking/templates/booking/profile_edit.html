@@ -46,8 +46,8 @@
             </script>
         {% endif %}
 
-        <div class="reschedule-wrapper">
-            <form method="post" class="reschedule-form">
+        <div class="reschedule-wrapper profile-wrapper">
+            <form method="post" class="reschedule-form profile-form" autocomplete="off">
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">
@@ -73,7 +73,7 @@
 
                 <div class="form-actions">
                     <a href="{% url 'dashboard' %}" class="btn btn-secondary">Назад</a>
-                    <button type="submit" class="btn btn-danger">Сохранить</button>
+                    <button type="submit" class="btn btn-success btn-profile">Сохранить</button>
                 </div>
             </form>
         </div>

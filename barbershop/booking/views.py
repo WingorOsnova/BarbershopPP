@@ -5,9 +5,10 @@ from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_POST
+from django.db.models import Q
 import datetime
-from .models import Barber, Service, Booking
-from .forms import BookingForm, LoginForm, RegisterForm
+from .models import Barber, Service, Booking, UserProfile
+from .forms import BookingForm, LoginForm, RegisterForm, ProfileForm
 from .utils import get_available_slots
 from django.utils import timezone
 
@@ -35,7 +36,7 @@ def home(request):
       available_slots = get_available_slots(selected_barber, selected_date)
 
   if request.method == 'POST':
-    form = BookingForm(request.POST, available_slots=available_slots)
+    form = BookingForm(request.POST, available_slots=available_slots, user=request.user)
     if form.is_valid():
       booking = form.save(commit=False)
       if request.user.is_authenticated:
@@ -49,7 +50,7 @@ def home(request):
     if selected_date:
       initial['booking_date'] = selected_date
 
-    form = BookingForm(initial=initial, available_slots=available_slots)
+    form = BookingForm(initial=initial, available_slots=available_slots, user=request.user)
 
   context = {
     'barbers': barbers,
@@ -84,6 +85,17 @@ def booking_create(request):
       selected_date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
       selected_time = datetime.datetime.strptime(time_str, '%H:%M').time()
       selected_service = Service.objects.get(id=service_id)
+
+      if request.user.is_authenticated:
+        conflict = Booking.objects.filter(
+          user=request.user,
+          booking_date=selected_date,
+          booking_time=selected_time,
+          status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED],
+        ).exists()
+        if conflict:
+          messages.error(request, "У вас уже есть запись на это время.")
+          return redirect('dashboard')
 
       Booking.objects.create(
         client_name=client_name,
@@ -158,7 +170,7 @@ def booking_api(request):
     if barber_obj and selected_date:
       available_slots = get_available_slots(barber_obj, selected_date)
 
-  form = BookingForm(request.POST, available_slots=available_slots)
+  form = BookingForm(request.POST, available_slots=available_slots, user=request.user)
 
   if form.is_valid():
     booking = form.save(commit=False)
@@ -201,6 +213,93 @@ def cancel_booking(request, booking_id):
   messages.success(request, 'Запись успешно отменена. Мы будем рады видеть вас снова!')
   return redirect('dashboard')
 
+
+@login_required
+def reschedule_booking(request, booking_id):
+  booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+  # Запреты
+  if booking.status in [Booking.STATUS_CANCELED, Booking.STATUS_COMPLETED, Booking.STATUS_NO_SHOW]:
+    messages.error(request, "Эту запись нельзя перенести.")
+    return redirect('dashboard')
+
+  appointment_dt = datetime.datetime.combine(booking.booking_date, booking.booking_time)
+  appointment_dt = timezone.make_aware(appointment_dt)
+
+  if appointment_dt <= timezone.now():
+    messages.error(request, "Прошедшую запись нельзя перенести.")
+    return redirect('dashboard')
+
+  if appointment_dt - timezone.now() < datetime.timedelta(hours=CANCEL_LIMIT_HOURS):
+    messages.error(request, f"Перенос возможен минимум за {CANCEL_LIMIT_HOURS} часа до визита.")
+    return redirect('dashboard')
+
+  # Выбор даты/барбера (барбер фиксирован — переносим к тому же)
+  selected_date_str = request.POST.get('booking_date') if request.method == 'POST' else request.GET.get('booking_date')
+  selected_date = None
+  available_slots = None
+
+  if selected_date_str:
+    try:
+      selected_date = datetime.datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+      available_slots = get_available_slots(booking.barber, selected_date)
+    except ValueError:
+      selected_date = None
+
+  if request.method == 'POST':
+    time_str = request.POST.get('booking_time')
+    if selected_date and time_str:
+      selected_time = datetime.datetime.strptime(time_str, '%H:%M').time()
+
+      # Проверим что слот реально свободен
+      if available_slots and selected_time in available_slots:
+        # Проверим, что нет другой активной записи пользователя в это же время
+        conflict = Booking.objects.filter(
+          user=request.user,
+          booking_date=selected_date,
+          booking_time=selected_time,
+          status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED],
+        ).exclude(id=booking.id).exists()
+        if conflict:
+          messages.error(request, "У вас уже есть запись на это время.")
+          return redirect('dashboard')
+
+        booking.booking_date = selected_date
+        booking.booking_time = selected_time
+        booking.status = Booking.STATUS_PENDING  # после переноса снова "ожидает"
+        booking.save(update_fields=['booking_date', 'booking_time', 'status'])
+
+        messages.success(request, "Запись перенесена! Мы свяжемся для подтверждения.")
+        return redirect('dashboard')
+
+      messages.error(request, "Этот слот уже занят. Выберите другое время.")
+
+  context = {
+    'booking': booking,
+    'selected_date': selected_date,
+    'available_slots': available_slots,
+    'min_date': datetime.date.today().isoformat(),
+  }
+  return render(request, 'booking/reschedule.html', context)
+
+
+@login_required
+def edit_profile(request):
+  profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
+  if request.method == 'POST':
+    form = ProfileForm(request.POST, instance=profile, user=request.user)
+    if form.is_valid():
+      form.save()
+      messages.success(request, "Профиль обновлён.")
+      return redirect('dashboard')
+  else:
+    form = ProfileForm(instance=profile, user=request.user)
+
+  return render(request, 'booking/profile_edit.html', {'form': form})
+
+
+
 def register_view(request):
   if request.method == 'POST':
     form = RegisterForm(request.POST)
@@ -230,14 +329,40 @@ def logout_view(request):
 
 @login_required
 def dashboard_view(request):
-  today = datetime.date.today()
+  now = timezone.localtime()
+  today = now.date()
+  current_time = now.time()
 
-  bookings = Booking.objects.filter(
+  base_qs = Booking.objects.filter(
     user=request.user
-  ).select_related('barber', 'service').order_by('-booking_date', '-booking_time')
+  ).select_related('barber', 'service')
+
+  # Отмечаем как "не явился" все просроченные (ожидаемые/подтвержденные) записи
+  missed_qs = base_qs.filter(
+    status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED]
+  ).filter(
+    Q(booking_date__lt=today) |
+    Q(booking_date=today, booking_time__lt=current_time)
+  )
+  if missed_qs.exists():
+    missed_qs.update(status=Booking.STATUS_NO_SHOW)
+
+  upcoming_bookings = base_qs.filter(
+    Q(booking_date__gt=today) |
+    Q(booking_date=today, booking_time__gte=current_time)
+  ).exclude(status__in=[Booking.STATUS_CANCELED, Booking.STATUS_COMPLETED, Booking.STATUS_NO_SHOW]) \
+   .order_by('booking_date', 'booking_time')
+
+  past_bookings = base_qs.exclude(
+    id__in=upcoming_bookings.values('id')
+  ).order_by('-booking_date', '-booking_time')
+
+  bookings = base_qs.order_by('-booking_date', '-booking_time')
 
   context = {
     'bookings': bookings,
+    'upcoming_bookings': upcoming_bookings,
+    'past_bookings': past_bookings,
     'today': today,
   }
 
