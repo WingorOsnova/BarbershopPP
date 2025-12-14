@@ -29,11 +29,89 @@
             <h2>👤 Профиль</h2>
             <div class="profile-info">
                 <p><strong>Вы вошли как:</strong> {{ request.user.username }}</p>
+                {% if request.user.first_name or request.user.last_name %}
+                <p><strong>Имя:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+                {% endif %}
                 {% if request.user.email %}
                 <p><strong>Email:</strong> {{ request.user.email }}</p>
                 {% endif %}
+                {% if request.user.profile.phone %}
+                <p><strong>Телефон:</strong> {{ request.user.profile.phone }}</p>
+                {% endif %}
+            </div>
+            <div class="profile-actions">
+                <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Редактировать профиль</a>
             </div>
         </div>
+
+        <section class="section">
+            <h2 class="section-title">Мои записи</h2>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message message-{{ message.tags|default:'info' }}">
+                            <span class="message-icon">
+                                {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}⚠️{% elif 'warning' in message.tags %}⚠️{% else %}ℹ️{% endif %}
+                            </span>
+                            <span class="message-text">{{ message }}</span>
+                            <button type="button" class="message-close" aria-label="Закрыть" onclick="this.parentElement.remove()">×</button>
+                        </div>
+                    {% endfor %}
+                </div>
+                <script>
+                    document.querySelectorAll('.messages .message').forEach(function (msg) {
+                        setTimeout(function () {
+                            msg.classList.add('message-hide');
+                            msg.addEventListener('animationend', function () { msg.remove(); }, { once: true });
+                        }, 4000);
+                    });
+                </script>
+            {% endif %}
+
+            {% if bookings %}
+                <div class="bookings-grid">
+                    {% for b in bookings %}
+                        <div class="booking-card">
+                            <div class="booking-header">
+                                <div class="booking-service">{{ b.service.name }}</div>
+                                <span class="booking-status status-{{ b.status }}">{{ b.get_status_display }}</span>
+                            </div>
+                            <div class="booking-details">
+                                <div class="booking-detail">
+                                    <span class="icon">📆</span>
+                                    <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="icon">🕐</span>
+                                    <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="icon">👨‍🦲</span>
+                                    <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                                </div>
+                                <div class="booking-detail">
+                                    <span class="icon">💈</span>
+                                    <span>Услуга: <strong>{{ b.service.name }}</strong> ({{ b.service.price }} ₴)</span>
+                                </div>
+                            </div>
+
+                            {% if b.status != "canceled" and b.status != "completed" and b.status != "no_show" %}
+                                <div class="booking-actions">
+                                    <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">Перенести</a>
+                                    <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('Вы точно хотите отменить запись?')">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Отменить</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div> 
+            {% else %}
+                <p class="empty">Пока нет записей.</p>
+            {% endif %}
+        </section>
 
         <!-- Upcoming Bookings -->
         <section class="section">
@@ -57,17 +135,22 @@
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">🕐</span>
-                                <span>Время: <strong>{{ b.booking_time }}</strong></span>
+                                <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">💰</span>
                                 <span>Цена: <strong>{{ b.service.price }} ₴</strong></span>
                             </div>
                         </div>
-                        <div class="booking-actions">
-                            <button class="btn btn-secondary">Перенести</button>
-                            <button class="btn btn-danger">Отменить</button>
-                        </div>
+                        {% if b.status != "canceled" and b.status != "completed" and b.status != "no_show" %}
+                            <div class="booking-actions">
+                                <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">Перенести</a>
+                                <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('Вы точно хотите отменить запись?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Отменить</button>
+                                </form>
+                            </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
@@ -101,7 +184,7 @@
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">🕐</span>
-                                <span>Время: <strong>{{ b.booking_time }}</strong></span>
+                                <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">💰</span>

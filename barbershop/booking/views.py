@@ -1,13 +1,17 @@
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 import datetime
 from .models import Barber, Service, Booking
 from .forms import BookingForm, LoginForm, RegisterForm
 from .utils import get_available_slots
+from django.utils import timezone
+
+CANCEL_LIMIT_HOURS = 3
 
 def home(request):
   barbers = Barber.objects.filter(is_active=True)
@@ -171,6 +175,31 @@ def booking_api(request):
   errors = {field: [str(err) for err in errs] for field, errs in form.errors.items()}
   return JsonResponse({"ok": False, "errors": errors}, status=400)
 
+def cancel_booking(request, booking_id):
+  booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+  # Нельзя отменять выполненную
+  if booking.status == Booking.STATUS_COMPLETED:
+    messages.error(request, 'Вы не можете отменить выполненную запись.')
+    return redirect('dashboard')
+  
+  appointment_dt = datetime.datetime.combine(booking.booking_date, booking.booking_time)
+  appointment_dt = timezone.make_aware(appointment_dt)
+  
+  if appointment_dt <= timezone.now():
+    messages.error(request, 'Вы не можете отменить прошедшую запись.')
+    return redirect('dashboard')
+
+  diff = appointment_dt - timezone.now()
+  if diff< datetime.timedelta(hours=CANCEL_LIMIT_HOURS):
+    messages.error(request, f'Отмена возможна минимум за {CANCEL_LIMIT_HOURS} часа до визита.')
+    return redirect('dashboard')
+
+  booking.status = Booking.STATUS_CANCELED
+  booking.save(update_fields=['status'])
+
+  messages.success(request, 'Запись успешно отменена. Мы будем рады видеть вас снова!')
+  return redirect('dashboard')
 
 def register_view(request):
   if request.method == 'POST':
@@ -201,4 +230,15 @@ def logout_view(request):
 
 @login_required
 def dashboard_view(request):
-  return render(request, 'booking/dashboard.html')
+  today = datetime.date.today()
+
+  bookings = Booking.objects.filter(
+    user=request.user
+  ).select_related('barber', 'service').order_by('-booking_date', '-booking_time')
+
+  context = {
+    'bookings': bookings,
+    'today': today,
+  }
+
+  return render(request, 'booking/dashboard.html', context)
