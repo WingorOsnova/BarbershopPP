@@ -38,16 +38,19 @@ class BookingForm(forms.ModelForm):
         'id': 'name',
         'placeholder': '',
         'data-lang-key': 'form-name',
+        'autocomplete': 'off',
       }),
       'client_phone' : forms.TextInput(attrs={
         'id': 'phone',
         'placeholder' : '+380',
         'data-lang-key': 'form-phone',
+        'autocomplete': 'off',
       }),
       'client_email' : forms.EmailInput(attrs={
         'id': 'email',
         'placeholder': '',
         'data-lang-key': 'form-email',
+        'autocomplete': 'off',
       }),
       'barber': forms.Select(attrs={
           'id': 'barber',

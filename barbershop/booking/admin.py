@@ -22,7 +22,8 @@ class AdminBooking(admin.ModelAdmin):
     'booking_date',
     'booking_time',
     'status',
-    'created_at'
+    'created_at',
+    'user'
   )
   list_filter = ('status', 'barber', 'service', 'booking_date')
   search_fields = ('client_name', 'client_phone','client_email')

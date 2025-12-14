@@ -11,6 +11,7 @@
     --darker: #0f0f0f;
     --light: #f5f5f5;
     --accent: #c89456;
+    --error: #ff6b6b;
 }
 
 body {
@@ -919,4 +920,32 @@ footer {
     font-size: 18px;
     opacity: 0.9;
   }
-  
+
+.nav-btn {
+    padding: 0.7rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-2px);
+}
+.nav-btn.logout {
+    border-color: var(--error);
+    color: var(--error);
+}
+
+.nav-btn.logout:hover {
+    background: var(--error);
+    color: white;
+}

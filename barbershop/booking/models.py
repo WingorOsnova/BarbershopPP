@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Barber(models.Model):
   name = models.CharField(max_length=100)
@@ -24,6 +25,13 @@ class Booking(models.Model):
   client_name = models.CharField(max_length=100)
   client_phone = models.CharField(max_length=20)
   client_email = models.EmailField(blank=True)
+  user = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+    null=True,
+    blank=True,
+    on_delete=models.SET_NULL,
+    related_name='bookings',
+  )
   barber = models.ForeignKey(Barber, on_delete=models.CASCADE)
   service = models.ForeignKey(Service, on_delete=models.CASCADE)
   booking_date = models.DateField()

@@ -19,8 +19,13 @@
                     <li><a href="#booking" data-lang-key="nav-booking">Записаться</a></li>
                 </ul>
                 <div class="auth-buttons">
-                    <a href="{% url 'login' %}" class="auth-btn login" data-lang-key="btn-login">Войти</a>
-                    <a href="{% url 'register' %}" class="auth-btn register" data-lang-key="btn-register">Регистрация</a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="auth-btn login">{{ request.user.username }}</a>
+                    <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+                  {% else %}
+                    <a href="{% url 'login' %}" class="auth-btn login">Войти</a>
+                    <a href="{% url 'register' %}" class="auth-btn register">Регистрация</a>
+                  {% endif %}
                 </div>
                 <div class="lang-switcher">
                     <button class="lang-btn active" data-lang="ru">RU</button>

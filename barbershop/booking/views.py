@@ -33,7 +33,10 @@ def home(request):
   if request.method == 'POST':
     form = BookingForm(request.POST, available_slots=available_slots)
     if form.is_valid():
-      form.save()
+      booking = form.save(commit=False)
+      if request.user.is_authenticated:
+        booking.user = request.user
+      booking.save()
       return redirect('home')
   else:
     initial = {}
@@ -82,6 +85,7 @@ def booking_create(request):
         client_name=client_name,
         client_phone=client_phone,
         client_email=client_email,
+        user=request.user if request.user.is_authenticated else None,
         barber=selected_barber,
         service=selected_service,
         booking_date=selected_date,
@@ -153,7 +157,10 @@ def booking_api(request):
   form = BookingForm(request.POST, available_slots=available_slots)
 
   if form.is_valid():
-    booking = form.save()
+    booking = form.save(commit=False)
+    if request.user.is_authenticated:
+      booking.user = request.user
+    booking.save()
     return JsonResponse({
       "ok": True,
       "message": "Запись создана, мы свяжемся с вами для подтверждения.",
