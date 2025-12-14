@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактировать профиль - Barbershop</title>
+    <title>{% trans "Редактировать профиль" %} - Barbershop</title>
     <link rel="stylesheet" href="{% static 'booking/css/dashboard.css' %}">
 </head>
 <body>
@@ -12,16 +13,16 @@
         <div class="header-content">
             <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
             <nav class="header-nav">
-                <a href="{% url 'dashboard' %}" class="nav-btn">В кабинет</a>
-                <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+                <a href="{% url 'dashboard' %}" class="nav-btn">{% trans "В кабинет" %}</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
             </nav>
         </div>
     </header>
 
     <main class="reschedule-main">
         <div class="page-header">
-            <h1>Редактирование профиля</h1>
-            <p>Обновите данные, чтобы мы подставляли их при записи</p>
+            <h1>{% trans "Редактирование профиля" %}</h1>
+            <p>{% trans "Обновите данные, чтобы мы подставляли их при записи" %}</p>
         </div>
 
         {% if messages %}
@@ -32,7 +33,7 @@
                             {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}⚠️{% elif 'warning' in message.tags %}⚠️{% else %}ℹ️{% endif %}
                         </span>
                         <span class="message-text">{{ message }}</span>
-                        <button type="button" class="message-close" aria-label="Закрыть" onclick="this.parentElement.remove()">×</button>
+                        <button type="button" class="message-close" aria-label="{% trans "Закрыть" %}" onclick="this.parentElement.remove()">×</button>
                     </div>
                 {% endfor %}
             </div>
@@ -51,11 +52,11 @@
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="id_first_name">Имя</label>
+                        <label for="id_first_name">{% trans "Имя" %}</label>
                         {{ form.first_name }}
                     </div>
                     <div class="form-group">
-                        <label for="id_last_name">Фамилия</label>
+                        <label for="id_last_name">{% trans "Фамилия" %}</label>
                         {{ form.last_name }}
                     </div>
                 </div>
@@ -66,14 +67,14 @@
                         {{ form.email }}
                     </div>
                     <div class="form-group">
-                        <label for="id_phone">Телефон</label>
+                        <label for="id_phone">{% trans "Телефон" %}</label>
                         {{ form.phone }}
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Назад</a>
-                    <button type="submit" class="btn btn-success btn-profile">Сохранить</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Назад" %}</a>
+                    <button type="submit" class="btn btn-success btn-profile">{% trans "Сохранить" %}</button>
                 </div>
             </form>
         </div>

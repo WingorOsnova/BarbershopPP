@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="ru">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет - Barbershop</title>
+    <title>{% trans "Личный кабинет" %} - Barbershop</title>
     <link rel="stylesheet" href="{% static 'booking/css/dashboard.css' %}">
 </head>
 <body>
@@ -12,40 +13,40 @@
         <div class="header-content">
             <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
             <nav class="header-nav">
-                <a href="{% url 'home' %}" class="nav-btn">На главную</a>
-                <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+                <a href="{% url 'home' %}" class="nav-btn">{% trans "На главную" %}</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
             </nav>
         </div>
     </header>
 
     <main>
         <div class="page-header">
-            <h1>Личный кабинет</h1>
-            <p>Ваши записи и управление визитами</p>
+            <h1>{% trans "Личный кабинет" %}</h1>
+            <p>{% trans "Ваши записи и управление визитами" %}</p>
         </div>
 
         <!-- Profile Card -->
         <div class="profile-card">
-            <h2>👤 Профиль</h2>
+            <h2>👤 {% trans "Профиль" %}</h2>
             <div class="profile-info">
-                <p><strong>Вы вошли как:</strong> {{ request.user.username }}</p>
+                <p><strong>{% trans "Вы вошли как:" %}</strong> {{ request.user.username }}</p>
                 {% if request.user.first_name or request.user.last_name %}
-                <p><strong>Имя:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+                <p><strong>{% trans "Имя:" %}</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
                 {% endif %}
                 {% if request.user.email %}
                 <p><strong>Email:</strong> {{ request.user.email }}</p>
                 {% endif %}
                 {% if request.user.profile.phone %}
-                <p><strong>Телефон:</strong> {{ request.user.profile.phone }}</p>
+                <p><strong>{% trans "Телефон:" %}</strong> {{ request.user.profile.phone }}</p>
                 {% endif %}
             </div>
             <div class="profile-actions">
-                <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Редактировать профиль</a>
+                <a href="{% url 'edit_profile' %}" class="btn btn-success">{% trans "Редактировать профиль" %}</a>
             </div>
         </div>
 
         <section class="section">
-            <h2 class="section-title">Мои записи</h2>
+            <h2 class="section-title">{% trans "Мои записи" %}</h2>
 
             {% if messages %}
                 <div class="messages">
@@ -80,28 +81,28 @@
                             <div class="booking-details">
                                 <div class="booking-detail">
                                     <span class="icon">📆</span>
-                                    <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                                    <span>{% trans "Дата:" %} <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
                                 </div>
                                 <div class="booking-detail">
                                     <span class="icon">🕐</span>
-                                    <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
+                                    <span>{% trans "Время:" %} <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
                                 </div>
                                 <div class="booking-detail">
                                     <span class="icon">👨‍🦲</span>
-                                    <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                                    <span>{% trans "Барбер:" %} <strong>{{ b.barber.name }}</strong></span>
                                 </div>
                                 <div class="booking-detail">
                                     <span class="icon">💈</span>
-                                    <span>Услуга: <strong>{{ b.service.name }}</strong> ({{ b.service.price }} ₴)</span>
+                                    <span>{% trans "Услуга:" %} <strong>{{ b.service.name }}</strong> ({{ b.service.price }} ₴)</span>
                                 </div>
                             </div>
 
                             {% if b.status != "canceled" and b.status != "completed" and b.status != "no_show" %}
                                 <div class="booking-actions">
-                                    <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">Перенести</a>
-                                    <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('Вы точно хотите отменить запись?')">
+                                    <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">{% trans "Перенести" %}</a>
+                                    <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('{% trans "Вы точно хотите отменить запись?" %}')">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger">Отменить</button>
+                                        <button type="submit" class="btn btn-danger">{% trans "Отменить" %}</button>
                                     </form>
                                 </div>
                             {% endif %}
@@ -109,13 +110,13 @@
                     {% endfor %}
                 </div> 
             {% else %}
-                <p class="empty">Пока нет записей.</p>
+                <p class="empty">{% trans "Пока нет записей." %}</p>
             {% endif %}
         </section>
 
         <!-- Upcoming Bookings -->
         <section class="section">
-            <h2 class="section-title">📅 Мои будущие записи</h2>
+            <h2 class="section-title">📅 {% trans "Мои будущие записи" %}</h2>
             {% if upcoming_bookings %}
                 <div class="bookings-grid">
                     {% for b in upcoming_bookings %}
@@ -127,27 +128,27 @@
                         <div class="booking-details">
                             <div class="booking-detail">
                                 <span class="icon">👨‍🦲</span>
-                                <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                                <span>{% trans "Барбер:" %} <strong>{{ b.barber.name }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">📆</span>
-                                <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                                <span>{% trans "Дата:" %} <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">🕐</span>
-                                <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
+                                <span>{% trans "Время:" %} <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">💰</span>
-                                <span>Цена: <strong>{{ b.service.price }} ₴</strong></span>
+                                <span>{% trans "Цена:" %} <strong>{{ b.service.price }} ₴</strong></span>
                             </div>
                         </div>
                         {% if b.status != "canceled" and b.status != "completed" and b.status != "no_show" %}
                             <div class="booking-actions">
-                                <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">Перенести</a>
-                                <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('Вы точно хотите отменить запись?')">
+                                <a href="{% url 'booking_reschedule' b.id %}" class="btn btn-secondary">{% trans "Перенести" %}</a>
+                                <form method="post" action="{% url 'cancel_booking' b.id %}" onsubmit="return confirm('{% trans "Вы точно хотите отменить запись?" %}')">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger">Отменить</button>
+                                    <button type="submit" class="btn btn-danger">{% trans "Отменить" %}</button>
                                 </form>
                             </div>
                         {% endif %}
@@ -156,15 +157,15 @@
                 </div>
             {% else %}
                 <p class="empty">
-                    📭 Пока нет будущих записей.<br>
-                    <small>Самое время записаться на стрижку!</small>
+                    📭 {% trans "Пока нет будущих записей." %}<br>
+                    <small>{% trans "Самое время записаться на стрижку!" %}</small>
                 </p>
             {% endif %}
         </section>
 
         <!-- Past Bookings -->
         <section class="section">
-            <h2 class="section-title">📜 Прошлые записи</h2>
+            <h2 class="section-title">📜 {% trans "Прошлые записи" %}</h2>
             {% if past_bookings %}
                 <div class="bookings-grid">
                     {% for b in past_bookings %}
@@ -176,19 +177,19 @@
                         <div class="booking-details">
                             <div class="booking-detail">
                                 <span class="icon">👨‍🦲</span>
-                                <span>Барбер: <strong>{{ b.barber.name }}</strong></span>
+                                <span>{% trans "Барбер:" %} <strong>{{ b.barber.name }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">📆</span>
-                                <span>Дата: <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
+                                <span>{% trans "Дата:" %} <strong>{{ b.booking_date|date:"d.m.Y" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">🕐</span>
-                                <span>Время: <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
+                                <span>{% trans "Время:" %} <strong>{{ b.booking_time|time:"H:i" }}</strong></span>
                             </div>
                             <div class="booking-detail">
                                 <span class="icon">💰</span>
-                                <span>Цена: <strong>{{ b.service.price }} ₴</strong></span>
+                                <span>{% trans "Цена:" %} <strong>{{ b.service.price }} ₴</strong></span>
                             </div>
                         </div>
                     </div>
@@ -196,16 +197,16 @@
                 </div>
             {% else %}
                 <p class="empty">
-                    📭 Прошлых записей пока нет.
+                    📭 {% trans "Прошлых записей пока нет." %}
                 </p>
             {% endif %}
         </section>
 
         <!-- CTA -->
         <section class="cta-section">
-            <h3>✂️ Хотите записаться снова?</h3>
-            <p>Выберите удобное время и любимого мастера</p>
-            <a href="{% url 'home' %}#booking" class="cta-btn">Записаться сейчас</a>
+            <h3>✂️ {% trans "Хотите записаться снова?" %}</h3>
+            <p>{% trans "Выберите удобное время и любимого мастера" %}</p>
+            <a href="{% url 'home' %}#booking" class="cta-btn">{% trans "Записаться сейчас" %}</a>
         </section>
     </main>
 </body>

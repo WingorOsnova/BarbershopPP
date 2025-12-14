@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Перенос записи - Barbershop</title>
+    <title>{% trans "Перенос записи" %} - Barbershop</title>
     <link rel="stylesheet" href="{% static 'booking/css/dashboard.css' %}">
 </head>
 <body>
@@ -12,16 +13,16 @@
         <div class="header-content">
             <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
             <nav class="header-nav">
-                <a href="{% url 'dashboard' %}" class="nav-btn">В кабинет</a>
-                <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+                <a href="{% url 'dashboard' %}" class="nav-btn">{% trans "В кабинет" %}</a>
+                <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
             </nav>
         </div>
     </header>
 
     <main class="reschedule-main">
         <div class="page-header">
-            <h1>Перенос записи</h1>
-            <p>Выберите новую дату и время у барбера {{ booking.barber.name }}</p>
+            <h1>{% trans "Перенос записи" %}</h1>
+            <p>{% blocktrans with barber=booking.barber.name %}Выберите новую дату и время у барбера {{ barber }}{% endblocktrans %}</p>
         </div>
 
         {% if messages %}
@@ -32,12 +33,12 @@
                             {% if 'success' in message.tags %}✅{% elif 'error' in message.tags %}⚠️{% elif 'warning' in message.tags %}⚠️{% else %}ℹ️{% endif %}
                         </span>
                         <span class="message-text">{{ message }}</span>
-                        <button type="button" class="message-close" aria-label="Закрыть" onclick="this.parentElement.remove()">×</button>
+                        <button type="button" class="message-close" aria-label="{% trans "Закрыть" %}" onclick="this.parentElement.remove()">×</button>
                     </div>
                 {% endfor %}
             </div>
             <script>
-                // Авто-скрытие уведомлений через 4 секунды
+                // {% trans "Авто-скрытие уведомлений через 4 секунды" %}
                 document.querySelectorAll('.messages .message').forEach(function (msg) {
                     setTimeout(function () {
                         msg.classList.add('message-hide');
@@ -50,23 +51,23 @@
         <div class="reschedule-wrapper">
             <div class="booking-summary">
                 <div>
-                    <p class="label">Барбер</p>
+                    <p class="label">{% trans "Барбер" %}</p>
                     <p class="value">{{ booking.barber.name }}</p>
                 </div>
                 <div>
-                    <p class="label">Услуга</p>
+                    <p class="label">{% trans "Услуга" %}</p>
                     <p class="value">{{ booking.service.name }} — {{ booking.service.price }} ₴</p>
                 </div>
                 <div>
-                    <p class="label">Текущая дата</p>
+                    <p class="label">{% trans "Текущая дата" %}</p>
                     <p class="value">{{ booking.booking_date|date:"d.m.Y" }}</p>
                 </div>
                 <div>
-                    <p class="label">Текущее время</p>
+                    <p class="label">{% trans "Текущее время" %}</p>
                     <p class="value">{{ booking.booking_time|time:"H:i" }}</p>
                 </div>
                 <div>
-                    <p class="label">Статус</p>
+                    <p class="label">{% trans "Статус" %}</p>
                     <p class="value">{{ booking.get_status_display }}</p>
                 </div>
             </div>
@@ -75,17 +76,17 @@
                 {% csrf_token %}
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="booking_date">Новая дата</label>
+                        <label for="booking_date">{% trans "Новая дата" %}</label>
                         <input type="date" id="booking_date" name="booking_date" min="{{ min_date }}" value="{{ selected_date|date:'Y-m-d' }}" required>
                     </div>
                     <div class="form-group">
-                        <label>Мастер</label>
+                        <label>{% trans "Мастер" %}</label>
                         <div class="readonly-input">{{ booking.barber.name }}</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Доступные слоты</label>
+                    <label>{% trans "Доступные слоты" %}</label>
                     <div id="slotGrid" class="slot-grid">
                         {% if available_slots %}
                             {% for slot in available_slots %}
@@ -96,18 +97,18 @@
                     </div>
                     <p id="slotStatus" class="muted">
                         {% if available_slots %}
-                            Выберите время.
+                            {% trans "Выберите время." %}
                         {% elif selected_date %}
-                            На выбранную дату нет свободных слотов. Попробуйте другую дату.
+                            {% trans "На выбранную дату нет свободных слотов. Попробуйте другую дату." %}
                         {% else %}
-                            Выберите дату, чтобы увидеть свободное время.
+                            {% trans "Выберите дату, чтобы увидеть свободное время." %}
                         {% endif %}
                     </p>
                 </div>
 
                 <div class="form-actions">
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Назад</a>
-                    <button type="submit" class="btn btn-success btn-reschedule">Перенести</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Назад" %}</a>
+                    <button type="submit" class="btn btn-success btn-reschedule">{% trans "Перенести" %}</button>
                 </div>
             </form>
         </div>
@@ -130,7 +131,7 @@
                 if (!slotGrid) return;
                 slotGrid.innerHTML = '';
                 if (!slots || !slots.length) {
-                    setStatus('На выбранную дату нет свободных слотов. Попробуйте другую дату.');
+                    setStatus('{% trans "На выбранную дату нет свободных слотов. Попробуйте другую дату." %}');
                     return;
                 }
                 setStatus('');
@@ -156,15 +157,15 @@
 
             function fetchSlots(date) {
                 if (!date) {
-                    setStatus('Выберите дату, чтобы увидеть свободное время.');
+                    setStatus('{% trans "Выберите дату, чтобы увидеть свободное время." %}');
                     renderSlots([]);
                     return;
                 }
-                setStatus('Загружаем свободные слоты...');
+                setStatus('{% trans "Загружаем свободные слоты..." %}');
                 fetch(`${apiUrl}?barber=${encodeURIComponent(barberId)}&booking_date=${encodeURIComponent(date)}`)
                     .then(res => res.ok ? res.json() : Promise.reject())
                     .then(data => renderSlots(data.slots || []))
-                    .catch(() => setStatus('Не удалось загрузить слоты. Попробуйте позже.'));
+                    .catch(() => setStatus('{% trans "Не удалось загрузить слоты. Попробуйте позже." %}'));
             }
 
             dateInput?.addEventListener('change', (e) => fetchSlots(e.target.value));
