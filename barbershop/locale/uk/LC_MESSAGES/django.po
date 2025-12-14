@@ -1,0 +1,630 @@
+# Ukrainian translations
+msgid ""
+msgstr ""
+"Project-Id-Version: Barbershop\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-14 22:11+0000\n"
+"PO-Revision-Date: 2025-12-14 23:30+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+# Settings
+#: barbershop/settings.py:113
+msgid "Russian"
+msgstr "Російська"
+
+#: barbershop/settings.py:114
+msgid "Ukrainian"
+msgstr "Українська"
+
+#: barbershop/settings.py:115
+msgid "English"
+msgstr "Англійська"
+
+#: booking/forms.py:78
+msgid "Ваше имя *"
+msgstr "Ваше ім’я *"
+
+#: booking/forms.py:79
+msgid "Телефон *"
+msgstr "Телефон *"
+
+#: booking/forms.py:81
+msgid "Выберите барбера *"
+msgstr "Оберіть барбера *"
+
+#: booking/forms.py:82
+msgid "Выберите услугу *"
+msgstr "Оберіть послугу *"
+
+#: booking/forms.py:83
+msgid "Дата *"
+msgstr "Дата *"
+
+#: booking/forms.py:84
+msgid "Время сеанса *"
+msgstr "Час сеансу *"
+
+#: booking/forms.py:85
+msgid "Комментарий"
+msgstr "Коментар"
+
+# Forms
+#: booking/forms.py:90
+msgid "Введите ваше имя, чтобы мы смогли подтвердить запись."
+msgstr "Вкажіть ваше ім’я, щоб ми могли підтвердити запис."
+
+#: booking/forms.py:93
+msgid "Укажите номер телефона для связи."
+msgstr "Укажіть номер телефону для зв’язку."
+
+#: booking/forms.py:96
+msgid "Введите корректный email или оставьте поле пустым."
+msgstr "Введіть коректний email або залиште поле порожнім."
+
+#: booking/forms.py:99
+msgid "Выберите барбера, к которому хотите записаться."
+msgstr "Виберіть барбера, до якого хочете записатися."
+
+#: booking/forms.py:102
+msgid "Выберите услугу, которую хотите получить."
+msgstr "Виберіть послугу, яку хочете отримати."
+
+#: booking/forms.py:105
+msgid "Укажите дату визита."
+msgstr "Укажіть дату візиту."
+
+#: booking/forms.py:106
+msgid "Введите дату в корректном формате."
+msgstr "Введіть дату у коректному форматі."
+
+#: booking/forms.py:109
+msgid "Укажите удобное время."
+msgstr "Укажіть зручний час."
+
+#: booking/forms.py:110
+msgid "Введите время в корректном формате."
+msgstr "Введіть час у коректному форматі."
+
+#: booking/forms.py:113
+msgid "Сообщение слишком длинное."
+msgstr "Повідомлення занадто довге."
+
+#: booking/forms.py:138
+msgid "Сначала выберите барбера и дату"
+msgstr "Спочатку оберіть барбера та дату"
+
+#: booking/forms.py:140
+msgid "Выберите время"
+msgstr "Оберіть час"
+
+#: booking/forms.py:144
+#, fuzzy
+#| msgid "На выбранную дату нет свободных слотов. Попробуйте другую дату."
+msgid "Нет свободных слотов на выбранную дату"
+msgstr "На обрану дату немає вільних слотів. Спробуйте іншу дату."
+
+#: booking/forms.py:159
+msgid "Это время уже занято. Выберите другое."
+msgstr "Цей час уже зайнятий. Оберіть інший."
+
+#: booking/forms.py:170 booking/views.py:99 booking/views.py:266
+msgid "У вас уже есть запись на это время."
+msgstr "У вас вже є запис на цей час."
+
+#: booking/forms.py:176 booking/templates/booking/profile_edit.html:55
+msgid "Имя"
+msgstr "Ім’я"
+
+#: booking/forms.py:177 booking/templates/booking/profile_edit.html:59
+msgid "Фамилия"
+msgstr "Прізвище"
+
+#: booking/forms.py:183 booking/templates/booking/profile_edit.html:70
+msgid "Телефон"
+msgstr "Телефон"
+
+#: booking/models.py:69
+msgid "В ожидание"
+msgstr "В очікуванні"
+
+#: booking/models.py:70
+msgid "Подтверждено"
+msgstr "Підтверджено"
+
+#: booking/models.py:71
+msgid "Отменено"
+msgstr "Скасовано"
+
+#: booking/models.py:72
+msgid "Выполнено"
+msgstr "Виконано"
+
+#: booking/models.py:73
+msgid "Не явился"
+msgstr "Не з’явився"
+
+#: booking/models.py:80 booking/templates/booking/reschedule.html:70
+msgid "Статус"
+msgstr "Статус"
+
+# Dashboard
+#: booking/templates/booking/dashboard.html:8
+#: booking/templates/booking/dashboard.html:24
+msgid "Личный кабинет"
+msgstr "Особистий кабінет"
+
+#: booking/templates/booking/dashboard.html:16
+#: booking/templates/booking/logout.html:28
+msgid "На главную"
+msgstr "На головну"
+
+#: booking/templates/booking/dashboard.html:17
+#: booking/templates/booking/home.html:25
+#: booking/templates/booking/profile_edit.html:17
+#: booking/templates/booking/reschedule.html:17
+msgid "Выйти"
+msgstr "Вийти"
+
+#: booking/templates/booking/dashboard.html:25
+msgid "Ваши записи и управление визитами"
+msgstr "Ваші записи та керування візитами"
+
+#: booking/templates/booking/dashboard.html:30
+msgid "Профиль"
+msgstr "Профіль"
+
+#: booking/templates/booking/dashboard.html:32
+msgid "Вы вошли как:"
+msgstr "Ви увійшли як:"
+
+#: booking/templates/booking/dashboard.html:34
+msgid "Имя:"
+msgstr "Ім’я:"
+
+#: booking/templates/booking/dashboard.html:40
+msgid "Телефон:"
+msgstr "Телефон:"
+
+#: booking/templates/booking/dashboard.html:44
+#: booking/templates/booking/profile_edit.html:8
+msgid "Редактировать профиль"
+msgstr "Редагувати профіль"
+
+#: booking/templates/booking/dashboard.html:49
+msgid "Мои записи"
+msgstr "Мої записи"
+
+#: booking/templates/booking/dashboard.html:84
+#: booking/templates/booking/dashboard.html:135
+#: booking/templates/booking/dashboard.html:184
+msgid "Дата:"
+msgstr "Дата:"
+
+#: booking/templates/booking/dashboard.html:88
+#: booking/templates/booking/dashboard.html:139
+#: booking/templates/booking/dashboard.html:188
+msgid "Время:"
+msgstr "Час:"
+
+#: booking/templates/booking/dashboard.html:92
+#: booking/templates/booking/dashboard.html:131
+#: booking/templates/booking/dashboard.html:180
+msgid "Барбер:"
+msgstr "Барбер:"
+
+#: booking/templates/booking/dashboard.html:96
+msgid "Услуга:"
+msgstr "Послуга:"
+
+#: booking/templates/booking/dashboard.html:102
+#: booking/templates/booking/dashboard.html:148
+#: booking/templates/booking/reschedule.html:111
+msgid "Перенести"
+msgstr "Перенести"
+
+#: booking/templates/booking/dashboard.html:103
+#: booking/templates/booking/dashboard.html:149
+msgid "Вы точно хотите отменить запись?"
+msgstr "Ви точно хочете скасувати запис?"
+
+#: booking/templates/booking/dashboard.html:105
+#: booking/templates/booking/dashboard.html:151
+msgid "Отменить"
+msgstr "Скасувати"
+
+#: booking/templates/booking/dashboard.html:113
+msgid "Пока нет записей."
+msgstr "Поки немає записів."
+
+#: booking/templates/booking/dashboard.html:119
+msgid "Мои будущие записи"
+msgstr "Мої майбутні записи"
+
+#: booking/templates/booking/dashboard.html:143
+#: booking/templates/booking/dashboard.html:192
+msgid "Цена:"
+msgstr "Ціна:"
+
+#: booking/templates/booking/dashboard.html:160
+msgid "Пока нет будущих записей."
+msgstr "Поки немає майбутніх записів."
+
+#: booking/templates/booking/dashboard.html:161
+msgid "Самое время записаться на стрижку!"
+msgstr "Саме час записатися на стрижку!"
+
+#: booking/templates/booking/dashboard.html:168
+msgid "Прошлые записи"
+msgstr "Минулі записи"
+
+#: booking/templates/booking/dashboard.html:200
+msgid "Прошлых записей пока нет."
+msgstr "Минулі записи відсутні."
+
+#: booking/templates/booking/dashboard.html:207
+msgid "Хотите записаться снова?"
+msgstr "Хочете записатися знову?"
+
+#: booking/templates/booking/dashboard.html:208
+msgid "Выберите удобное время и любимого мастера"
+msgstr "Оберіть зручний час і улюбленого майстра"
+
+#: booking/templates/booking/dashboard.html:209
+#: booking/templates/booking/home.html:51
+msgid "Записаться сейчас"
+msgstr "Записатися зараз"
+
+# Home page
+#: booking/templates/booking/home.html:8
+msgid "Barbershop - Стиль и мастерство"
+msgstr "Barbershop - Стиль і майстерність"
+
+#: booking/templates/booking/home.html:17
+msgid "О нас"
+msgstr "Про нас"
+
+#: booking/templates/booking/home.html:18
+msgid "Услуги"
+msgstr "Послуги"
+
+#: booking/templates/booking/home.html:19
+msgid "Барберы"
+msgstr "Барбери"
+
+#: booking/templates/booking/home.html:20
+#: booking/templates/booking/home.html:236
+msgid "Записаться"
+msgstr "Записатися"
+
+#: booking/templates/booking/home.html:27
+#: booking/templates/booking/login.html:38
+#: booking/templates/booking/register.html:49
+msgid "Войти"
+msgstr "Увійти"
+
+#: booking/templates/booking/home.html:28
+#: booking/templates/booking/register.html:8
+#: booking/templates/booking/register.html:19
+msgid "Регистрация"
+msgstr "Реєстрація"
+
+#: booking/templates/booking/home.html:49
+#: booking/templates/booking/login.html:15
+#: booking/templates/booking/logout.html:15
+#: booking/templates/booking/register.html:15
+msgid "Стиль и мастерство"
+msgstr "Стиль і майстерність"
+
+#: booking/templates/booking/home.html:50
+msgid "Профессиональный уход за вашим образом"
+msgstr "Професійний догляд за вашим образом"
+
+#: booking/templates/booking/home.html:56
+msgid "О нашем барбершопе"
+msgstr "Про наш барбершоп"
+
+#: booking/templates/booking/home.html:57
+msgid "Традиции и современность"
+msgstr "Традиції та сучасність"
+
+#: booking/templates/booking/home.html:60
+msgid "Наша миссия"
+msgstr "Наша місія"
+
+#: booking/templates/booking/home.html:62
+msgid ""
+"Мы создаем уникальный опыт для каждого клиента, сочетая классические техники "
+"барберинга с современными тенденциями. Наша команда профессионалов превратит "
+"ваш визит в настоящее удовольствие."
+msgstr ""
+"Ми створюємо унікальний досвід для кожного клієнта, поєднуючи класичні "
+"техніки барберингу із сучасними тенденціями. Наша команда професіоналів "
+"перетворить ваш візит на справжнє задоволення."
+
+#: booking/templates/booking/home.html:65
+msgid ""
+"С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. "
+"Доверьте нам свой образ, и вы не пожалеете."
+msgstr ""
+"З понад 10-річним досвідом роботи ми знаємо все про чоловічий стиль і "
+"догляд. Довірте нам свій образ — і ви не пошкодуєте."
+
+#: booking/templates/booking/home.html:73
+msgid "Наши услуги"
+msgstr "Наші послуги"
+
+#: booking/templates/booking/home.html:74
+msgid "Качество по доступным ценам"
+msgstr "Якість за доступними цінами"
+
+#: booking/templates/booking/home.html:82
+msgid "мин"
+msgstr "хв"
+
+#: booking/templates/booking/home.html:85
+msgid "Нет доступных услуг"
+msgstr "Немає доступних послуг"
+
+#: booking/templates/booking/home.html:91
+msgid "Наши мастера"
+msgstr "Наші майстри"
+
+#: booking/templates/booking/home.html:92
+msgid "Профессионалы своего дела"
+msgstr "Професіонали своєї справи"
+
+#: booking/templates/booking/home.html:94
+msgid "Предыдущие барберы"
+msgstr "Попередні барбери"
+
+#: booking/templates/booking/home.html:108
+#, python-format
+msgid "Опыт: %(years)s лет"
+msgstr "Досвід: %(years)s років"
+
+#: booking/templates/booking/home.html:116
+msgid "К сожалению нет доступных барбер 😞"
+msgstr "Нажаль, немає доступних барберів 😞"
+
+#: booking/templates/booking/home.html:119
+msgid "Следующие барберы"
+msgstr "Наступні барбери"
+
+#: booking/templates/booking/home.html:124
+msgid "Записаться на стрижку"
+msgstr "Записатися на стрижку"
+
+#: booking/templates/booking/home.html:125
+msgid "Выберите удобное время"
+msgstr "Оберіть зручний час"
+
+#: booking/templates/booking/home.html:234
+msgid "Закрыть уведомление"
+msgstr "Закрити сповіщення"
+
+#: booking/templates/booking/home.html:248
+msgid "© 2024 Barbershop. Все права защищены."
+msgstr "© 2024 Barbershop. Усі права захищено."
+
+#: booking/templates/booking/home.html:249
+msgid "г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx"
+msgstr "м. Київ, вул. Хрещатик, 1 | +380 (xx) xxx-xx-xx"
+
+#: booking/templates/booking/home.html:253
+msgid "Наверх"
+msgstr "Вгору"
+
+# Login/Register
+#: booking/templates/booking/login.html:8
+#: booking/templates/booking/login.html:19
+msgid "Вход в аккаунт"
+msgstr "Вхід до аккаунту"
+
+#: booking/templates/booking/login.html:20
+msgid "Войдите, чтобы управлять записями"
+msgstr "Увійдіть, щоб керувати записами"
+
+#: booking/templates/booking/login.html:42
+msgid "Нет аккаунта?"
+msgstr "Немає аккаунту?"
+
+#: booking/templates/booking/login.html:43
+msgid "Зарегистрироваться"
+msgstr "Зареєструватися"
+
+#: booking/templates/booking/login.html:48
+#: booking/templates/booking/register.html:54
+msgid "Вернуться на главную"
+msgstr "Повернутися на головну"
+
+#: booking/templates/booking/logout.html:8
+msgid "Выход"
+msgstr "Вихід"
+
+#: booking/templates/booking/logout.html:20
+msgid "Вы вышли из аккаунта"
+msgstr "Ви вийшли з аккаунту"
+
+#: booking/templates/booking/logout.html:22
+msgid "До встречи! Надеемся скоро увидеть вас снова."
+msgstr "До зустрічі! Сподіваємося побачити вас знову."
+
+#: booking/templates/booking/logout.html:23
+msgid "Вы можете войти обратно или вернуться на главную страницу."
+msgstr "Можете увійти знову або повернутися на головну сторінку."
+
+#: booking/templates/booking/logout.html:27
+msgid "Войти снова"
+msgstr "Увійти знову"
+
+#: booking/templates/booking/logout.html:32
+msgid "или"
+msgstr "або"
+
+#: booking/templates/booking/logout.html:36
+msgid "Хотите записаться без входа?"
+msgstr "Бажаєте записатися без входу?"
+
+#: booking/templates/booking/logout.html:38
+msgid "Перейти к форме записи"
+msgstr "Перейти до форми запису"
+
+#: booking/templates/booking/profile_edit.html:16
+#: booking/templates/booking/reschedule.html:16
+msgid "В кабинет"
+msgstr "У кабінет"
+
+#: booking/templates/booking/profile_edit.html:24
+msgid "Редактирование профиля"
+msgstr "Редагування профілю"
+
+#: booking/templates/booking/profile_edit.html:25
+msgid "Обновите данные, чтобы мы подставляли их при записи"
+msgstr "Оновіть дані, щоб ми підставляли їх при записі"
+
+#: booking/templates/booking/profile_edit.html:36
+#: booking/templates/booking/reschedule.html:36
+msgid "Закрыть"
+msgstr "Закрити"
+
+#: booking/templates/booking/profile_edit.html:76
+#: booking/templates/booking/reschedule.html:110
+msgid "Назад"
+msgstr "Назад"
+
+#: booking/templates/booking/profile_edit.html:77
+msgid "Сохранить"
+msgstr "Зберегти"
+
+#: booking/templates/booking/register.html:20
+msgid "Создайте аккаунт для записи"
+msgstr "Створіть аккаунт для запису"
+
+#: booking/templates/booking/register.html:44
+msgid "Создать аккаунт"
+msgstr "Створити аккаунт"
+
+#: booking/templates/booking/register.html:48
+msgid "Уже есть аккаунт?"
+msgstr "Вже є аккаунт?"
+
+# Reschedule
+#: booking/templates/booking/reschedule.html:8
+#: booking/templates/booking/reschedule.html:24
+msgid "Перенос записи"
+msgstr "Перенесення запису"
+
+#: booking/templates/booking/reschedule.html:25
+#, python-format
+msgid "Выберите новую дату и время у барбера %(barber)s"
+msgstr "Оберіть нову дату та час у барбера %(barber)s"
+
+#: booking/templates/booking/reschedule.html:41
+msgid "Авто-скрытие уведомлений через 4 секунды"
+msgstr "Автоприховування повідомлень за 4 секунди"
+
+#: booking/templates/booking/reschedule.html:54
+msgid "Барбер"
+msgstr "Барбер"
+
+#: booking/templates/booking/reschedule.html:58
+msgid "Услуга"
+msgstr "Послуга"
+
+#: booking/templates/booking/reschedule.html:62
+msgid "Текущая дата"
+msgstr "Поточна дата"
+
+#: booking/templates/booking/reschedule.html:66
+msgid "Текущее время"
+msgstr "Поточний час"
+
+#: booking/templates/booking/reschedule.html:79
+msgid "Новая дата"
+msgstr "Нова дата"
+
+#: booking/templates/booking/reschedule.html:83
+msgid "Мастер"
+msgstr "Майстер"
+
+#: booking/templates/booking/reschedule.html:89
+msgid "Доступные слоты"
+msgstr "Доступні слоти"
+
+#: booking/templates/booking/reschedule.html:100
+msgid "Выберите время."
+msgstr "Оберіть час."
+
+#: booking/templates/booking/reschedule.html:102
+#: booking/templates/booking/reschedule.html:134
+msgid "На выбранную дату нет свободных слотов. Попробуйте другую дату."
+msgstr "На обрану дату немає вільних слотів. Спробуйте іншу дату."
+
+#: booking/templates/booking/reschedule.html:104
+#: booking/templates/booking/reschedule.html:160
+msgid "Выберите дату, чтобы увидеть свободное время."
+msgstr "Оберіть дату, щоб побачити вільний час."
+
+#: booking/templates/booking/reschedule.html:164
+msgid "Загружаем свободные слоты..."
+msgstr "Завантажуємо вільні слоти..."
+
+#: booking/templates/booking/reschedule.html:168
+msgid "Не удалось загрузить слоты. Попробуйте позже."
+msgstr "Не вдалося завантажити слоти. Спробуйте пізніше."
+
+# Views/messages
+#: booking/views.py:46 booking/views.py:184
+msgid "Запись создана, мы свяжемся с вами для подтверждения."
+msgstr "Запис створено, ми зв’яжемося з вами для підтвердження."
+
+#: booking/views.py:197
+msgid "Вы не можете отменить выполненную запись."
+msgstr "Ви не можете скасувати виконаний запис."
+
+#: booking/views.py:204
+msgid "Вы не можете отменить прошедшую запись."
+msgstr "Ви не можете скасувати минулий запис."
+
+#: booking/views.py:209
+#, python-format
+msgid "Отмена возможна минимум за %(hours)s часа до визита."
+msgstr "Скасування можливе щонайменше за %(hours)s години до візиту."
+
+#: booking/views.py:215
+msgid "Запись успешно отменена. Мы будем рады видеть вас снова!"
+msgstr "Запис успішно скасовано. Будемо раді бачити вас знову!"
+
+#: booking/views.py:225
+msgid "Эту запись нельзя перенести."
+msgstr "Цей запис не можна перенести."
+
+#: booking/views.py:232
+msgid "Прошедшую запись нельзя перенести."
+msgstr "Минулий запис не можна перенести."
+
+#: booking/views.py:236
+#, python-format
+msgid "Перенос возможен минимум за %(hours)s часа до визита."
+msgstr "Перенесення можливе щонайменше за %(hours)s години до візиту."
+
+#: booking/views.py:274
+msgid "Запись перенесена! Мы свяжемся для подтверждения."
+msgstr "Запис перенесено! Ми зв’яжемося для підтвердження."
+
+#: booking/views.py:277
+msgid "Этот слот уже занят. Выберите другое время."
+msgstr "Цей слот уже зайнятий. Оберіть інший час."
+
+#: booking/views.py:296
+#, fuzzy
+#| msgid "Профиль"
+msgid "Профиль обновлён."
+msgstr "Профіль"

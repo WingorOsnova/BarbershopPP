@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 from .models import Booking, UserProfile
 from .utils import get_available_slots
@@ -74,42 +75,42 @@ class BookingForm(forms.ModelForm):
     }
 
     labels = {
-      'client_name': 'Ваше имя *',
-      'client_phone': 'Телефон *',
+      'client_name': _('Ваше имя *'),
+      'client_phone': _('Телефон *'),
       'client_email': 'Email',
-      'barber': 'Выберите барбера *',
-      'service': 'Выберите услугу *',
-      'booking_date': 'Дата *',
-      'booking_time': 'Время *',
-      'message': 'Комментарий',
+      'barber': _('Выберите барбера *'),
+      'service': _('Выберите услугу *'),
+      'booking_date': _('Дата *'),
+      'booking_time': _('Время сеанса *'),
+      'message': _('Комментарий'),
     }
 
     error_messages = {
       'client_name': {
-        'required': 'Введите ваше имя, чтобы мы смогли подтвердить запись.',
+        'required': _('Введите ваше имя, чтобы мы смогли подтвердить запись.'),
       },
       'client_phone': {
-        'required': 'Укажите номер телефона для связи.',
+        'required': _('Укажите номер телефона для связи.'),
       },
       'client_email': {
-        'invalid': 'Введите корректный email или оставьте поле пустым.',
+        'invalid': _('Введите корректный email или оставьте поле пустым.'),
       },
       'barber': {
-        'required': 'Выберите барбера, к которому хотите записаться.',
+        'required': _('Выберите барбера, к которому хотите записаться.'),
       },
       'service': {
-        'required': 'Выберите услугу, которую хотите получить.',
+        'required': _('Выберите услугу, которую хотите получить.'),
       },
       'booking_date': {
-        'required': 'Укажите дату визита.',
-        'invalid': 'Введите дату в корректном формате.',
+        'required': _('Укажите дату визита.'),
+        'invalid': _('Введите дату в корректном формате.'),
       },
       'booking_time': {
-        'required': 'Укажите удобное время.',
-        'invalid': 'Введите время в корректном формате.',
+        'required': _('Укажите удобное время.'),
+        'invalid': _('Введите время в корректном формате.'),
       },
       'message': {
-        'max_length': 'Сообщение слишком длинное.',
+        'max_length': _('Сообщение слишком длинное.'),
       },
     }
 
@@ -134,13 +135,13 @@ class BookingForm(forms.ModelForm):
 
     # Настраиваем выпадающий список времени
     if available_slots is None:
-      slot_choices = [('', 'Сначала выберите барбера и дату')]
+      slot_choices = [('', _('Сначала выберите барбера и дату'))]
     elif available_slots:
-      slot_choices = [('', 'Выберите время')] + [
+      slot_choices = [('', _('Выберите время'))] + [
         (slot.strftime('%H:%M'), slot.strftime('%H:%M')) for slot in available_slots
       ]
     else:
-      slot_choices = [('', 'Нет свободных слотов на выбранную дату')]
+      slot_choices = [('', _('Нет свободных слотов на выбранную дату'))]
 
     self.fields['booking_time'].widget.choices = slot_choices
   
@@ -155,7 +156,7 @@ class BookingForm(forms.ModelForm):
 
     available = get_available_slots(barber, booking_date)
     if booking_time not in available:
-        raise ValidationError("Это время уже занято. Выберите другое.")
+        raise ValidationError(_("Это время уже занято. Выберите другое."))
 
     # Проверяем, что у пользователя нет другой записи в это же время
     if self.user and self.user.is_authenticated:
@@ -166,20 +167,20 @@ class BookingForm(forms.ModelForm):
         status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED],
       ).exists()
       if conflict:
-        raise ValidationError("У вас уже есть запись на это время.")
+        raise ValidationError(_("У вас уже есть запись на это время."))
 
     return cleaned_data
 
 
 class ProfileForm(forms.ModelForm):
-  first_name = forms.CharField(label='Имя', required=False)
-  last_name = forms.CharField(label='Фамилия', required=False)
+  first_name = forms.CharField(label=_('Имя'), required=False)
+  last_name = forms.CharField(label=_('Фамилия'), required=False)
   email = forms.EmailField(label='Email', required=False)
 
   class Meta:
     model = UserProfile
     fields = ['phone']
-    labels = {'phone': 'Телефон'}
+    labels = {'phone': _('Телефон')}
     widgets = {
       'phone': forms.TextInput(attrs={'placeholder': '+380...', 'autocomplete': 'off'})
     }

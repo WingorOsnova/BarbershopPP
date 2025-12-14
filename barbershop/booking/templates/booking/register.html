@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="ru">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация - Barbershop</title>
+    <title>{% trans "Регистрация" %} - Barbershop</title>
     <link rel="stylesheet" href="{% static 'booking/css/register.css' %}">
 </head>
 <body>
     <div class="auth-container">
         <div class="logo">
             <h1>BARBERSHOP</h1>
-            <p>Стиль и мастерство</p>
+            <p>{% trans "Стиль и мастерство" %}</p>
         </div>
 
         <div class="auth-card">
-            <h2>Регистрация</h2>
-            <p class="subtitle">Создайте аккаунт для записи</p>
+            <h2>{% trans "Регистрация" %}</h2>
+            <p class="subtitle">{% trans "Создайте аккаунт для записи" %}</p>
 
             <form method="post">
                 {% csrf_token %}
@@ -40,17 +41,17 @@
                     {{ form.password2.errors }}
                 </div>
 
-                <button type="submit" class="submit-btn">Создать аккаунт</button>
+                <button type="submit" class="submit-btn">{% trans "Создать аккаунт" %}</button>
             </form>
 
             <div class="auth-links">
-                <p>Уже есть аккаунт?</p>
-                <a href="{% url 'login' %}">← Войти</a>
+                <p>{% trans "Уже есть аккаунт?" %}</p>
+                <a href="{% url 'login' %}">← {% trans "Войти" %}</a>
             </div>
         </div>
 
         <div class="back-home">
-            <a href="{% url 'home' %}">← Вернуться на главную</a>
+            <a href="{% url 'home' %}">← {% trans "Вернуться на главную" %}</a>
         </div>
     </div>
 </body>

@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="ru">
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Выход - Barbershop</title>
+    <title>{% trans "Выход" %} - Barbershop</title>
     <link rel="stylesheet" href="{% static 'booking/css/logout.css' %}">
 </head>
 <body>
     <div class="logout-container">
         <div class="logo">
             <h1>BARBERSHOP</h1>
-            <p>Стиль и мастерство</p>
+            <p>{% trans "Стиль и мастерство" %}</p>
         </div>
 
         <div class="logout-card">
             <div class="logout-icon">👋</div>
-            <h2>Вы вышли из аккаунта</h2>
+            <h2>{% trans "Вы вышли из аккаунта" %}</h2>
             <p>
-                До встречи! Надеемся скоро увидеть вас снова.<br>
-                Вы можете войти обратно или вернуться на главную страницу.
+                {% trans "До встречи! Надеемся скоро увидеть вас снова." %}<br>
+                {% trans "Вы можете войти обратно или вернуться на главную страницу." %}
             </p>
 
             <div class="button-group">
-                <a href="{% url 'login' %}" class="btn btn-primary">Войти снова</a>
-                <a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+                <a href="{% url 'login' %}" class="btn btn-primary">{% trans "Войти снова" %}</a>
+                <a href="{% url 'home' %}" class="btn btn-secondary">{% trans "На главную" %}</a>
             </div>
 
             <div class="divider">
-                <span>или</span>
+                <span>{% trans "или" %}</span>
             </div>
 
             <div class="footer-note">
-                Хотите записаться без входа?<br>
+                {% trans "Хотите записаться без входа?" %}<br>
                 <a href="{% url 'home' %}#booking" style="color: var(--primary); text-decoration: none;">
-                    Перейти к форме записи →
+                    {% trans "Перейти к форме записи" %} →
                 </a>
             </div>
         </div>

@@ -11,6 +11,7 @@ from .models import Barber, Service, Booking, UserProfile
 from .forms import BookingForm, LoginForm, RegisterForm, ProfileForm
 from .utils import get_available_slots
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 CANCEL_LIMIT_HOURS = 3
 
@@ -42,6 +43,7 @@ def home(request):
       if request.user.is_authenticated:
         booking.user = request.user
       booking.save()
+      messages.success(request, _("Запись создана, мы свяжемся с вами для подтверждения."))
       return redirect('home')
   else:
     initial = {}
@@ -94,7 +96,7 @@ def booking_create(request):
           status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED],
         ).exists()
         if conflict:
-          messages.error(request, "У вас уже есть запись на это время.")
+          messages.error(request, _("У вас уже есть запись на это время."))
           return redirect('dashboard')
 
       Booking.objects.create(
@@ -179,7 +181,7 @@ def booking_api(request):
     booking.save()
     return JsonResponse({
       "ok": True,
-      "message": "Запись создана, мы свяжемся с вами для подтверждения.",
+      "message": _("Запись создана, мы свяжемся с вами для подтверждения."),
       "id": booking.id,
     })
 
@@ -192,25 +194,25 @@ def cancel_booking(request, booking_id):
 
   # Нельзя отменять выполненную
   if booking.status == Booking.STATUS_COMPLETED:
-    messages.error(request, 'Вы не можете отменить выполненную запись.')
+    messages.error(request, _('Вы не можете отменить выполненную запись.'))
     return redirect('dashboard')
   
   appointment_dt = datetime.datetime.combine(booking.booking_date, booking.booking_time)
   appointment_dt = timezone.make_aware(appointment_dt)
   
   if appointment_dt <= timezone.now():
-    messages.error(request, 'Вы не можете отменить прошедшую запись.')
+    messages.error(request, _('Вы не можете отменить прошедшую запись.'))
     return redirect('dashboard')
 
   diff = appointment_dt - timezone.now()
   if diff< datetime.timedelta(hours=CANCEL_LIMIT_HOURS):
-    messages.error(request, f'Отмена возможна минимум за {CANCEL_LIMIT_HOURS} часа до визита.')
+    messages.error(request, _('Отмена возможна минимум за %(hours)s часа до визита.') % {'hours': CANCEL_LIMIT_HOURS})
     return redirect('dashboard')
 
   booking.status = Booking.STATUS_CANCELED
   booking.save(update_fields=['status'])
 
-  messages.success(request, 'Запись успешно отменена. Мы будем рады видеть вас снова!')
+  messages.success(request, _('Запись успешно отменена. Мы будем рады видеть вас снова!'))
   return redirect('dashboard')
 
 
@@ -220,18 +222,18 @@ def reschedule_booking(request, booking_id):
 
   # Запреты
   if booking.status in [Booking.STATUS_CANCELED, Booking.STATUS_COMPLETED, Booking.STATUS_NO_SHOW]:
-    messages.error(request, "Эту запись нельзя перенести.")
+    messages.error(request, _("Эту запись нельзя перенести."))
     return redirect('dashboard')
 
   appointment_dt = datetime.datetime.combine(booking.booking_date, booking.booking_time)
   appointment_dt = timezone.make_aware(appointment_dt)
 
   if appointment_dt <= timezone.now():
-    messages.error(request, "Прошедшую запись нельзя перенести.")
+    messages.error(request, _("Прошедшую запись нельзя перенести."))
     return redirect('dashboard')
 
   if appointment_dt - timezone.now() < datetime.timedelta(hours=CANCEL_LIMIT_HOURS):
-    messages.error(request, f"Перенос возможен минимум за {CANCEL_LIMIT_HOURS} часа до визита.")
+    messages.error(request, _("Перенос возможен минимум за %(hours)s часа до визита.") % {'hours': CANCEL_LIMIT_HOURS})
     return redirect('dashboard')
 
   # Выбор даты/барбера (барбер фиксирован — переносим к тому же)
@@ -261,7 +263,7 @@ def reschedule_booking(request, booking_id):
           status__in=[Booking.STATUS_PENDING, Booking.STATUS_CONFIRMED],
         ).exclude(id=booking.id).exists()
         if conflict:
-          messages.error(request, "У вас уже есть запись на это время.")
+          messages.error(request, _("У вас уже есть запись на это время."))
           return redirect('dashboard')
 
         booking.booking_date = selected_date
@@ -269,10 +271,10 @@ def reschedule_booking(request, booking_id):
         booking.status = Booking.STATUS_PENDING  # после переноса снова "ожидает"
         booking.save(update_fields=['booking_date', 'booking_time', 'status'])
 
-        messages.success(request, "Запись перенесена! Мы свяжемся для подтверждения.")
+        messages.success(request, _("Запись перенесена! Мы свяжемся для подтверждения."))
         return redirect('dashboard')
 
-      messages.error(request, "Этот слот уже занят. Выберите другое время.")
+      messages.error(request, _("Этот слот уже занят. Выберите другое время."))
 
   context = {
     'booking': booking,
@@ -291,7 +293,7 @@ def edit_profile(request):
     form = ProfileForm(request.POST, instance=profile, user=request.user)
     if form.is_valid():
       form.save()
-      messages.success(request, "Профиль обновлён.")
+      messages.success(request, _("Профиль обновлён."))
       return redirect('dashboard')
   else:
     form = ProfileForm(instance=profile, user=request.user)

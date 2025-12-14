@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.validators import FileExtensionValidator
+from django.utils.translation import gettext_lazy as _
 
 class Barber(models.Model):
   name = models.CharField(max_length=100)
@@ -65,18 +66,18 @@ class Booking(models.Model):
   STATUS_NO_SHOW = 'no_show'
 
   STATUS_CHOICES = [
-    (STATUS_PENDING, 'В ожидание'),
-    (STATUS_CONFIRMED, 'Подтвержденно'),
-    (STATUS_CANCELED, 'Отмененно'),
-    (STATUS_COMPLETED, 'Выполненно'),
-    (STATUS_NO_SHOW, 'Не явился'),
+    (STATUS_PENDING, _('В ожидание')),
+    (STATUS_CONFIRMED, _('Подтверждено')),
+    (STATUS_CANCELED, _('Отменено')),
+    (STATUS_COMPLETED, _('Выполнено')),
+    (STATUS_NO_SHOW, _('Не явился')),
   ]
 
   status = models.CharField(
     max_length=20,
     choices=STATUS_CHOICES,
     default=STATUS_PENDING,
-    verbose_name='Статус'
+    verbose_name=_('Статус')
   )
 
   def __str__(self):

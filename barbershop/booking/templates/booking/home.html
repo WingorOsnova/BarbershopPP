@@ -1,10 +1,11 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbershop - Стиль и мастерство</title>
+    <title>{% trans "Barbershop - Стиль и мастерство" %}</title>
     <link rel="stylesheet" href="{% static 'booking/css/home.css' %}">
 </head>
 <body id="top">
@@ -13,25 +14,27 @@
             <a href="#top" class="logo" data-lang-key="logo" style="text-decoration: none;">BARBERSHOP</a>
             <div class="nav-right" id="navRight">
                 <ul class="nav-links">
-                    <li><a href="#about" data-lang-key="nav-about">О нас</a></li>
-                    <li><a href="#services" data-lang-key="nav-services">Услуги</a></li>
-                    <li><a href="#barbers" data-lang-key="nav-barbers">Барберы</a></li>
-                    <li><a href="#booking" data-lang-key="nav-booking">Записаться</a></li>
+                    <li><a href="#about" data-lang-key="nav-about">{% trans "О нас" %}</a></li>
+                    <li><a href="#services" data-lang-key="nav-services">{% trans "Услуги" %}</a></li>
+                    <li><a href="#barbers" data-lang-key="nav-barbers">{% trans "Барберы" %}</a></li>
+                    <li><a href="#booking" data-lang-key="nav-booking">{% trans "Записаться" %}</a></li>
                 </ul>
                 <div class="auth-buttons">
                     {% if request.user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="auth-btn login">{{ request.user.username }}</a>
-                    <a href="{% url 'logout' %}" class="nav-btn logout">Выйти</a>
+                    <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
                   {% else %}
-                    <a href="{% url 'login' %}" class="auth-btn login">Войти</a>
-                    <a href="{% url 'register' %}" class="auth-btn register">Регистрация</a>
+                    <a href="{% url 'login' %}" class="auth-btn login">{% trans "Войти" %}</a>
+                    <a href="{% url 'register' %}" class="auth-btn register">{% trans "Регистрация" %}</a>
                   {% endif %}
                 </div>
-                <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="ru">RU</button>
-                    <button class="lang-btn" data-lang="uk">UA</button>
-                    <button class="lang-btn" data-lang="en">EN</button>
-                </div>
+                <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <button class="lang-btn{% if LANGUAGE_CODE == 'ru' %} active{% endif %}" type="submit" name="language" value="ru">RU</button>
+                    <button class="lang-btn{% if LANGUAGE_CODE == 'uk' %} active{% endif %}" type="submit" name="language" value="uk">UA</button>
+                    <button class="lang-btn{% if LANGUAGE_CODE == 'en' %} active{% endif %}" type="submit" name="language" value="en">EN</button>
+                </form>
             </div>
             <div class="burger" id="burger">
                 <span></span>
@@ -43,23 +46,23 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1 data-lang-key="hero-title">Стиль и мастерство</h1>
-            <p class="hero-subtitle" data-lang-key="hero-subtitle">Профессиональный уход за вашим образом</p>
-            <a href="#booking" class="cta-button" data-lang-key="hero-cta">Записаться сейчас</a>
+            <h1 data-lang-key="hero-title">{% trans "Стиль и мастерство" %}</h1>
+            <p class="hero-subtitle" data-lang-key="hero-subtitle">{% trans "Профессиональный уход за вашим образом" %}</p>
+            <a href="#booking" class="cta-button" data-lang-key="hero-cta">{% trans "Записаться сейчас" %}</a>
         </div>
     </section>
 
     <section id="about">
-        <h2 class="section-title fade-in" data-lang-key="about-title">О нашем барбершопе</h2>
-        <p class="section-subtitle fade-in" data-lang-key="about-subtitle">Традиции и современность</p>
+        <h2 class="section-title fade-in" data-lang-key="about-title">{% trans "О нашем барбершопе" %}</h2>
+        <p class="section-subtitle fade-in" data-lang-key="about-subtitle">{% trans "Традиции и современность" %}</p>
         <div class="about-content">
             <div class="about-text fade-in">
-                <h3 data-lang-key="about-mission-title">Наша миссия</h3>
+                <h3 data-lang-key="about-mission-title">{% trans "Наша миссия" %}</h3>
                 <p data-lang-key="about-mission-text">
-                    Мы создаем уникальный опыт для каждого клиента, сочетая классические техники барберинга с современными тенденциями. Наша команда профессионалов превратит ваш визит в настоящее удовольствие.
+                    {% trans "Мы создаем уникальный опыт для каждого клиента, сочетая классические техники барберинга с современными тенденциями. Наша команда профессионалов превратит ваш визит в настоящее удовольствие." %}
                 </p>
                 <p data-lang-key="about-experience-text">
-                    С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. Доверьте нам свой образ, и вы не пожалеете.
+                    {% trans "С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. Доверьте нам свой образ, и вы не пожалеете." %}
                 </p>
             </div>
             <div class="about-image fade-in"></div>
@@ -67,8 +70,8 @@
     </section>
 
     <section id="services">
-        <h2 class="section-title fade-in" data-lang-key="services-title">Наши услуги</h2>
-        <p class="section-subtitle fade-in" data-lang-key="services-subtitle">Качество по доступным ценам</p>
+        <h2 class="section-title fade-in" data-lang-key="services-title">{% trans "Наши услуги" %}</h2>
+        <p class="section-subtitle fade-in" data-lang-key="services-subtitle">{% trans "Качество по доступным ценам" %}</p>
         <div class="services-grid">
             {% for service in services %}
                 <div class="service-card fade-in">
@@ -76,19 +79,19 @@
                     <h3 data-lang-key="service-1-name">{{ service.name }}</h3>
                     <p data-lang-key="service-1-desc">{{ service.description }}</p>
                     <div class="service-price">{{ service.price }} ₴</div>
-                    <div class="service-duration">⏱ {{service.duration_minutes}} <span data-lang-key="minutes">мин</span></div>
+                    <div class="service-duration">⏱ {{service.duration_minutes}} <span data-lang-key="minutes">{% trans "мин" %}</span></div>
                 </div>
             {% empty %}
-                <p class="no-services">Нет доступных услуг</p>
+                <p class="no-services">{% trans "Нет доступных услуг" %}</p>
             {% endfor %}
         </div>
     </section>
 
     <section id="barbers">
-        <h2 class="section-title fade-in" data-lang-key="barbers-title">Наши мастера</h2>
-        <p class="section-subtitle fade-in" data-lang-key="barbers-subtitle">Профессионалы своего дела</p>
+        <h2 class="section-title fade-in" data-lang-key="barbers-title">{% trans "Наши мастера" %}</h2>
+        <p class="section-subtitle fade-in" data-lang-key="barbers-subtitle">{% trans "Профессионалы своего дела" %}</p>
         <div class="barbers-slider">
-            <button class="slider-arrow" data-slider="barbers-prev" aria-label="Предыдущие барберы">&larr;</button>
+            <button class="slider-arrow" data-slider="barbers-prev" aria-label="{% trans "Предыдущие барберы" %}">&larr;</button>
             <div class="barbers-track">
                 {% for barber in barbers %}
                     <div class="barber-card fade-in">
@@ -101,23 +104,25 @@
                         </div>
                         <div class="barber-info">
                             <h3 data-lang-key="barber-1-name">{{barber.name}}</h3>
-                            <p class="barber-experience" data-lang-key="barber-1-exp">Опыт: {{barber.experience_years}} лет</p>
+                            <p class="barber-experience" data-lang-key="barber-1-exp">
+                                {% blocktrans with years=barber.experience_years %}Опыт: {{ years }} лет{% endblocktrans %}
+                            </p>
                             <p class="barber-description" data-lang-key="barber-1-desc">
                                 {{ barber.description}}
                             </p>
                         </div>
                     </div>
                 {% empty %}
-                    <p class="no-barbers">К сожелению нет доступных барбер 😞</p>
+                    <p class="no-barbers">{% trans "К сожалению нет доступных барбер 😞" %}</p>
                 {% endfor %}
             </div>
-            <button class="slider-arrow" data-slider="barbers-next" aria-label="Следующие барберы">&rarr;</button>
+            <button class="slider-arrow" data-slider="barbers-next" aria-label="{% trans "Следующие барберы" %}">&rarr;</button>
         </div>
     </section>
 
     <section id="booking">
-        <h2 class="section-title fade-in" data-lang-key="booking-title">Записаться на стрижку</h2>
-        <p class="section-subtitle fade-in" data-lang-key="booking-subtitle">Выберите удобное время</p>
+        <h2 class="section-title fade-in" data-lang-key="booking-title">{% trans "Записаться на стрижку" %}</h2>
+        <p class="section-subtitle fade-in" data-lang-key="booking-subtitle">{% trans "Выберите удобное время" %}</p>
         <div class="booking-container fade-in">
             <form id="bookingForm" method="post">
                 {% csrf_token %}
@@ -202,7 +207,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group{% if form.booking_time.errors %} has-error{% endif %}">
-                        <label>Время сеанса *</label>
+                        <label>{{ form.booking_time.label }}</label>
                         {{ form.booking_time }}
                         {% if form.booking_time.errors %}
                             <div class="field-error">
@@ -226,9 +231,9 @@
                 </div>
                 <div id="formStatus" class="form-status" style="display:none;">
                     <span class="form-status__text"></span>
-                    <button type="button" class="form-status__close" aria-label="Закрыть уведомление">×</button>
+                    <button type="button" class="form-status__close" aria-label="{% trans "Закрыть уведомление" %}">×</button>
                 </div>
-                <button type="submit" class="submit-btn" data-lang-key="form-submit">Записаться</button>
+                <button type="submit" class="submit-btn" data-lang-key="form-submit">{% trans "Записаться" %}</button>
             </form>
         </div>
     </section>
@@ -240,12 +245,12 @@
                 <a href="#" aria-label="Facebook">👍</a>
                 <a href="#" aria-label="Telegram">✈️</a>
             </div>
-            <p data-lang-key="footer-text">&copy; 2024 Barbershop. Все права защищены.</p>
-            <p data-lang-key="footer-address">г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx</p>
+            <p data-lang-key="footer-text">{% trans "© 2024 Barbershop. Все права защищены." %}</p>
+            <p data-lang-key="footer-address">{% trans "г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx" %}</p>
         </div>
     </footer>
 
-    <a href="#top" class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">↑</a>
+    <a href="#top" class="scroll-top-btn" id="scrollTopBtn" aria-label="{% trans "Наверх" %}">↑</a>
 
     <script>
         // Translations
