@@ -92,7 +92,13 @@
             <div class="barbers-track">
                 {% for barber in barbers %}
                     <div class="barber-card fade-in">
-                        <div class="barber-image"></div>
+                        <div class="barber-image">
+                            {% if barber.photo %}
+                                <img src="{{ barber.photo.url }}" alt="{{ barber.name }}">
+                            {% else %}
+                                <div class="barber-placeholder">👨‍🦲</div>
+                            {% endif %}
+                        </div>
                         <div class="barber-info">
                             <h3 data-lang-key="barber-1-name">{{barber.name}}</h3>
                             <p class="barber-experience" data-lang-key="barber-1-exp">Опыт: {{barber.experience_years}} лет</p>
