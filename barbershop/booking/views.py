@@ -7,7 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.db.models import Q
 import datetime
-from .models import Barber, Service, Booking, UserProfile
+from .models import Barber, Service, Booking, UserProfile, SiteContent
 from .forms import BookingForm, LoginForm, RegisterForm, ProfileForm
 from .utils import get_available_slots
 from django.utils import timezone
@@ -18,6 +18,7 @@ CANCEL_LIMIT_HOURS = 3
 def home(request):
   barbers = Barber.objects.filter(is_active=True)
   services = Service.objects.all()
+  site_content = SiteContent.objects.first()
   available_slots = None
   selected_barber = None
   selected_date = None
@@ -59,6 +60,7 @@ def home(request):
     'services': services,
     'form': form,
     'available_slots': available_slots,
+    'site_content': site_content,
   }
 
   return render(request, 'booking/home.html', context)

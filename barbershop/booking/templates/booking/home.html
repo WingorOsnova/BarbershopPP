@@ -28,13 +28,15 @@
                     <a href="{% url 'register' %}" class="auth-btn register">{% trans "Регистрация" %}</a>
                   {% endif %}
                 </div>
-                <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
-                    {% csrf_token %}
-                    <input name="next" type="hidden" value="{{ request.path }}">
-                    <button class="lang-btn{% if LANGUAGE_CODE == 'ru' %} active{% endif %}" type="submit" name="language" value="ru">RU</button>
-                    <button class="lang-btn{% if LANGUAGE_CODE == 'uk' %} active{% endif %}" type="submit" name="language" value="uk">UA</button>
-                    <button class="lang-btn{% if LANGUAGE_CODE == 'en' %} active{% endif %}" type="submit" name="language" value="en">EN</button>
-                </form>
+                {% with current_lang=LANGUAGE_CODE|slice:":2" %}
+                    <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.path }}">
+                        <button class="lang-btn{% if current_lang == 'ru' %} active{% endif %}" type="submit" name="language" value="ru">RU</button>
+                        <button class="lang-btn{% if current_lang == 'uk' %} active{% endif %}" type="submit" name="language" value="uk">UA</button>
+                        <button class="lang-btn{% if current_lang == 'en' %} active{% endif %}" type="submit" name="language" value="en">EN</button>
+                    </form>
+                {% endwith %}
             </div>
             <div class="burger" id="burger">
                 <span></span>
@@ -65,7 +67,11 @@
                     {% trans "С более чем 10-летним опытом работы, мы знаем все о мужском стиле и уходе. Доверьте нам свой образ, и вы не пожалеете." %}
                 </p>
             </div>
-            <div class="about-image fade-in"></div>
+            {% if site_content and site_content.about_image %}
+                <div class="about-image fade-in" style="--about-icon-display:none; background-image: linear-gradient(135deg, rgba(212,165,116,0.25), rgba(255,255,255,0.05)), url('{{ site_content.about_image.url }}');"></div>
+            {% else %}
+                <div class="about-image fade-in" data-icon="✂"></div>
+            {% endif %}
         </div>
     </section>
 

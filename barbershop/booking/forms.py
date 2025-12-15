@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -170,6 +171,13 @@ class BookingForm(forms.ModelForm):
         raise ValidationError(_("У вас уже есть запись на это время."))
 
     return cleaned_data
+
+  def clean_client_phone(self):
+    phone = (self.cleaned_data.get('client_phone') or '').strip()
+    digits = re.sub(r'\D', '', phone)
+    if len(digits) < 10 or len(digits) > 15:
+      raise ValidationError(_("Введите телефон в международном формате, пример +380501234567."))
+    return phone
 
 
 class ProfileForm(forms.ModelForm):
