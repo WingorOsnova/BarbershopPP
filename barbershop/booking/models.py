@@ -31,6 +31,22 @@ class Barber(models.Model):
       self.photo.delete(save=False)
     super().delete(*args, **kwargs)
 
+
+class SiteContent(models.Model):
+  about_image = models.ImageField(
+    upload_to='about/',
+    blank=True,
+    null=True,
+    validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'webp'])],
+  )
+
+  class Meta:
+    verbose_name = _('Контент сайта')
+    verbose_name_plural = _('Контент сайта')
+
+  def __str__(self):
+    return "Site content"
+
 class Service(models.Model):
   icon = models.CharField(max_length=10)
   name = models.CharField(max_length=100)

@@ -15,6 +15,15 @@
             <nav class="header-nav">
                 <a href="{% url 'dashboard' %}" class="nav-btn">{% trans "В кабинет" %}</a>
                 <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
+                {% with current_lang=LANGUAGE_CODE|slice:":2" %}
+                    <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" name="language" value="ru" class="lang-btn{% if current_lang == 'ru' %} active{% endif %}">RU</button>
+                        <button type="submit" name="language" value="uk" class="lang-btn{% if current_lang == 'uk' %} active{% endif %}">UA</button>
+                        <button type="submit" name="language" value="en" class="lang-btn{% if current_lang == 'en' %} active{% endif %}">EN</button>
+                    </form>
+                {% endwith %}
             </nav>
         </div>
     </header>

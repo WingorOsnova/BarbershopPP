@@ -38,7 +38,7 @@ class BookingForm(forms.ModelForm):
     widgets = {
       'client_name' : forms.TextInput(attrs={
         'id': 'name',
-        'placeholder': '',
+        'placeholder': _('Имя и фамилия'),
         'data-lang-key': 'form-name',
         'autocomplete': 'off',
       }),
@@ -47,10 +47,12 @@ class BookingForm(forms.ModelForm):
         'placeholder' : '+380',
         'data-lang-key': 'form-phone',
         'autocomplete': 'off',
+        'inputmode': 'tel',
+        'pattern': r'\+?[0-9\s\-\(\)]{10,20}',
       }),
       'client_email' : forms.EmailInput(attrs={
         'id': 'email',
-        'placeholder': '',
+        'placeholder': 'email@example.com',
         'data-lang-key': 'form-email',
         'autocomplete': 'off',
       }),
@@ -65,12 +67,13 @@ class BookingForm(forms.ModelForm):
       'booking_date': forms.DateInput(attrs={
           'id': 'date',
           'type': 'date',
+          'placeholder': 'YYYY-MM-DD',
           'data-lang-key': 'form-date',
       }),
       'message': forms.Textarea(attrs={
           'id': 'comment',
           'rows': 3,
-          'placeholder': '',
+          'placeholder': _('Комментарий (необязательно)'),
           'data-lang-key': 'form-comment',
       }),
     }
@@ -175,9 +178,19 @@ class BookingForm(forms.ModelForm):
   def clean_client_phone(self):
     phone = (self.cleaned_data.get('client_phone') or '').strip()
     digits = re.sub(r'\D', '', phone)
+
     if len(digits) < 10 or len(digits) > 15:
-      raise ValidationError(_("Введите телефон в международном формате, пример +380501234567."))
-    return phone
+      raise ValidationError(_("Введите телефон в формате +380501234567 (10–15 цифр)."))
+
+    if len(digits) == 10 and digits.startswith('0'):
+      digits = f"38{digits}"
+
+    formatted = digits if phone.startswith('+') else f"+{digits}"
+    pure_digits = re.sub(r'\D', '', formatted)
+    if len(pure_digits) < 10 or len(pure_digits) > 15:
+      raise ValidationError(_("Введите телефон в формате +380501234567 (10–15 цифр)."))
+
+    return formatted
 
 
 class ProfileForm(forms.ModelForm):
@@ -190,7 +203,12 @@ class ProfileForm(forms.ModelForm):
     fields = ['phone']
     labels = {'phone': _('Телефон')}
     widgets = {
-      'phone': forms.TextInput(attrs={'placeholder': '+380...', 'autocomplete': 'off'})
+      'phone': forms.TextInput(attrs={
+        'placeholder': '+380XXXXXXXXX',
+        'autocomplete': 'off',
+        'inputmode': 'tel',
+        'pattern': r'\+?[0-9\s\-\(\)]{10,20}',
+      })
     }
 
   def __init__(self, *args, **kwargs):
@@ -200,10 +218,12 @@ class ProfileForm(forms.ModelForm):
       self.fields['first_name'].initial = self.user.first_name
       self.fields['last_name'].initial = self.user.last_name
       self.fields['email'].initial = self.user.email
+    self.fields['first_name'].widget.attrs.setdefault('placeholder', _('Имя'))
+    self.fields['last_name'].widget.attrs.setdefault('placeholder', _('Фамилия'))
+    self.fields['email'].widget.attrs.setdefault('placeholder', 'email@example.com')
 
   def save(self, commit=True):
     profile = super().save(commit=False)
-    # Сохраняем данные пользователя
     self.user.first_name = self.cleaned_data.get('first_name', '')
     self.user.last_name = self.cleaned_data.get('last_name', '')
     self.user.email = self.cleaned_data.get('email', '')
@@ -218,6 +238,30 @@ class RegisterForm(UserCreationForm):
     model = User
     fields = ['username', 'password1', 'password2']
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['username'].widget.attrs.update({
+      'placeholder': _('Придумайте логин'),
+      'autocomplete': 'off'
+    })
+    self.fields['password1'].widget.attrs.update({
+      'placeholder': _('Придумайте пароль'),
+      'autocomplete': 'new-password'
+    })
+    self.fields['password2'].widget.attrs.update({
+      'placeholder': _('Повторите пароль'),
+      'autocomplete': 'new-password'
+    })
+
 
 class LoginForm(AuthenticationForm):
-  pass
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.fields['username'].widget.attrs.update({
+      'placeholder': _('Ваш логин'),
+      'autocomplete': 'off'
+    })
+    self.fields['password'].widget.attrs.update({
+      'placeholder': _('Ваш пароль'),
+      'autocomplete': 'off'
+    })

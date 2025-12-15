@@ -247,9 +247,15 @@
     <footer>
         <div class="footer-content">
             <div class="social-links">
-                <a href="#" aria-label="Instagram">📷</a>
-                <a href="#" aria-label="Facebook">👍</a>
-                <a href="#" aria-label="Telegram">✈️</a>
+                <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" aria-label="TikTok" data-social="tiktok">
+                    <img src="{% static 'booking/icon/tiktok-brands-solid-full.svg' %}" alt="TikTok">
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" data-social="instagram">
+                    <img src="{% static 'booking/icon/instagram-brands-solid-full.svg' %}" alt="Instagram">
+                </a>
+                <a href="https://t.me/" target="_blank" rel="noopener noreferrer" aria-label="Telegram" data-social="telegram">
+                    <img src="{% static 'booking/icon/telegram-brands-solid-full.svg' %}" alt="Telegram">
+                </a>
             </div>
             <p data-lang-key="footer-text">{% trans "© 2024 Barbershop. Все права защищены." %}</p>
             <p data-lang-key="footer-address">{% trans "г. Киев, ул. Крещатик, 1 | +380 (xx) xxx-xx-xx" %}</p>
@@ -641,6 +647,9 @@
             dateInput.setAttribute('min', today);
         }
 
+        const availableSlotsUrl = "{% url 'available_slots_api' %}";
+        const bookingApiUrl = "{% url 'booking_api' %}";
+
         async function loadSlots() {
             if (!barberSelect || !dateInput || !timeSelect) return;
             const barber = barberSelect.value;
@@ -659,7 +668,7 @@
 
             try {
                 const params = new URLSearchParams({ barber, booking_date: date });
-                const res = await fetch(`/api/available-slots/?${params.toString()}`);
+                const res = await fetch(`${availableSlotsUrl}?${params.toString()}`);
                 const data = await res.json();
                 const slots = data.slots || [];
 
@@ -707,13 +716,14 @@
                 const formData = new FormData(bookingForm);
 
                 try {
-                    const res = await fetch('/api/book/', {
+                    const res = await fetch(bookingApiUrl, {
                         method: 'POST',
                         headers: { 'X-CSRFToken': csrfToken },
                         body: formData,
                     });
 
-                    const data = await res.json();
+                    let data = {};
+                    try { data = await res.clone().json(); } catch (_e) { data = {}; }
 
                     if (!res.ok || !data.ok) {
                         const errors = data.errors || {};

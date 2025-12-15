@@ -295,7 +295,7 @@ def edit_profile(request):
     form = ProfileForm(request.POST, instance=profile, user=request.user)
     if form.is_valid():
       form.save()
-      messages.success(request, _("Профиль обновлён."))
+      messages.success(request, ("Профиль обновлён."))
       return redirect('dashboard')
   else:
     form = ProfileForm(instance=profile, user=request.user)

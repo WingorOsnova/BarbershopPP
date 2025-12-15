@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Barber, Service, Booking
+from .models import Barber, Service, Booking, SiteContent
 
 @admin.register(Barber)
 class AdminBarber(admin.ModelAdmin):
@@ -38,4 +38,17 @@ class AdminBooking(admin.ModelAdmin):
   list_filter = ('status', 'barber', 'service', 'booking_date')
   search_fields = ('client_name', 'client_phone','client_email')
   ordering = ('-booking_time', '-booking_date')
+
+
+@admin.register(SiteContent)
+class SiteContentAdmin(admin.ModelAdmin):
+  list_display = ('id', 'about_image_preview')
+  readonly_fields = ('about_image_preview',)
+  fields = ('about_image', 'about_image_preview')
+
+  def about_image_preview(self, obj):
+    if obj.about_image:
+      return format_html('<img src="{}" style="max-height:160px;border-radius:10px;" />', obj.about_image.url)
+    return "—"
+  about_image_preview.short_description = "About image"
   
