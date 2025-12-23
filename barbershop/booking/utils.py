@@ -35,3 +35,8 @@ def get_available_slots(barber, date):
 
     booked_times = set(booked_times_qs)
     return [t for t in all_slots if t not in booked_times]
+
+def get_client_ip(request):
+    return request.META.get('REMOTE_ADDR', 'unknown')
+
+

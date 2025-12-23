@@ -13,6 +13,15 @@ from .utils import get_available_slots
 
 
 class BookingForm(forms.ModelForm):
+  hp_field = forms.CharField(
+    required=False,
+    widget=forms.TextInput(attrs={
+      'autocomplete': 'off',
+      'tabindex': '-1',
+      'aria-hidden': 'true',
+      'style': 'position:absolute; left:-9999px; opacity:0; height:1px; width:1px;'
+    })
+  )
   booking_time = forms.TimeField(
     input_formats=['%H:%M'],
     widget=forms.Select(attrs={
@@ -33,6 +42,7 @@ class BookingForm(forms.ModelForm):
       'booking_date',
       'booking_time',
       'message',
+      'hp_field',
     ]
 
     widgets = {
@@ -87,6 +97,7 @@ class BookingForm(forms.ModelForm):
       'booking_date': _('Дата *'),
       'booking_time': _('Время сеанса *'),
       'message': _('Комментарий'),
+      'hp_field': '',
     }
 
     error_messages = {
@@ -172,6 +183,10 @@ class BookingForm(forms.ModelForm):
       ).exists()
       if conflict:
         raise ValidationError(_("У вас уже есть запись на это время."))
+
+    # Honeypot: если поле заполнено — считаем спамом
+    if self.cleaned_data.get('hp_field'):
+      raise ValidationError(_("Спам-фильтр: отправка отклонена."))
 
     return cleaned_data
 

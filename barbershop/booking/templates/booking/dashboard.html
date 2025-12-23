@@ -12,7 +12,7 @@
     <header>
         <div class="header-content">
             <a href="{% url 'home' %}" class="logo">BARBERSHOP</a>
-            <nav class="header-nav">
+            <nav class="header-nav" id="dashNav">
                 <a href="{% url 'home' %}" class="nav-btn">{% trans "На главную" %}</a>
                 <a href="{% url 'logout' %}" class="nav-btn logout">{% trans "Выйти" %}</a>
                 {% with current_lang=LANGUAGE_CODE|slice:":2" %}
@@ -25,6 +25,11 @@
                     </form>
                 {% endwith %}
             </nav>
+            <button class="burger" id="burger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
 
@@ -218,5 +223,23 @@
             <a href="{% url 'home' %}#booking" class="cta-btn">{% trans "Записаться сейчас" %}</a>
         </section>
     </main>
+
+    <script>
+        (function() {
+            const burger = document.getElementById('burger');
+            const nav = document.getElementById('dashNav');
+            if (!burger || !nav) return;
+            burger.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                burger.classList.toggle('active');
+            });
+            nav.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    burger.classList.remove('active');
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

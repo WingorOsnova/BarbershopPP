@@ -234,6 +234,14 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+                {{ form.hp_field }}
+                {% if form.hp_field.errors %}
+                    <div class="field-error">
+                        {% for error in form.hp_field.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 </div>
                 <div id="formStatus" class="form-status" style="display:none;">
                     <span class="form-status__text"></span>
@@ -477,16 +485,20 @@
         const burger = document.getElementById('burger');
         const navRight = document.getElementById('navRight');
 
-        burger.addEventListener('click', () => {
-            navRight.classList.toggle('active');
-        });
-
-        // Close menu when clicking on a link
-        document.querySelectorAll('.nav-links a, .auth-btn').forEach(link => {
-            link.addEventListener('click', () => {
-                navRight.classList.remove('active');
+        if (burger && navRight) {
+            burger.addEventListener('click', () => {
+                navRight.classList.toggle('active');
+                burger.classList.toggle('active');
             });
-        });
+
+            // Close menu when clicking on a link or button
+            document.querySelectorAll('.nav-links a, .auth-btn, .lang-btn').forEach(link => {
+                link.addEventListener('click', () => {
+                    navRight.classList.remove('active');
+                    burger.classList.remove('active');
+                });
+            });
+        }
 
         // Barbers slider
         const barbersTrack = document.querySelector('.barbers-track');
