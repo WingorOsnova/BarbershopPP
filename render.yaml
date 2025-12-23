@@ -4,6 +4,7 @@ services:
     env: python
     buildCommand: "./build.sh"
     startCommand: "cd barbershop && gunicorn barbershop.wsgi:application"
+    rootDir: .
     envVars:
       - key: DJANGO_DEBUG
         value: "False"
