@@ -1,1 +1,1 @@
-web: gunicorn barbershop.wsgi:application --chdir barbershop
+web: bash -c "cd barbershop && gunicorn barbershop.wsgi:application"
