@@ -229,6 +229,22 @@ nav {
     transform: translateY(-7px) rotate(-45deg);
 }
 
+@media (max-width: 968px) {
+    .lang-switcher {
+        width: 100%;
+        margin-left: 0;
+        justify-content: space-between;
+    }
+    .lang-btn {
+        flex: 1;
+        text-align: center;
+    }
+    .nav-btn.logout {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
@@ -960,6 +976,8 @@ footer {
   
   /* Даём место под иконку справа */
   .date-field #date {
+    width: 100%;
+    box-sizing: border-box;
     padding-right: 44px;
   }
   
