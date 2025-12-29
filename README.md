@@ -37,7 +37,20 @@ python manage.py test
 How to verify quickly: log in, create one booking (service + barber + date/time), then check the main page — the slot is shown once and cannot be double-booked.
 
 ## Screenshots
-(Add 2–4 visuals in `media/screenshots` when publishing: home/booking flow, dashboard, profile/edit)
+## Screenshots
+
+### Home page
+![Home](docs/home.png)
+
+### Booking form
+![Booking](docs/booking.png)
+
+### Dashboard booking
+![Success](docs/dashboard.png)
+
+### Admin panel
+![Admin](docs/admin.png)
+
 
 ---
 
