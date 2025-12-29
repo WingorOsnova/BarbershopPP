@@ -972,6 +972,8 @@ footer {
 /* Обёртка для поля даты */
 .date-field {
     position: relative;
+    width: 100%;
+    display: block;
   }
   
   /* Даём место под иконку справа */
