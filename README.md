@@ -1,48 +1,54 @@
-# Barbershop Booking
+# bookingservices-telegram-bot
 
-Conversion-focused SPA for a barbershop: service/barber showcase, frictionless booking flow, multilingual UX (EN/UA/RU), and built-in anti-spam/rate-limit protection. Ready for production on Render (Gunicorn + WhiteNoise + Postgres).
+Готовое решение для онлайн-записи в салон/барбершоп: веб-интерфейс для клиентов, личный кабинет с переносами/отменой и отдельная админ-панель. Проект используется как демо и шаблон — адаптируйте тексты/брендинг под свой бизнес.
 
-## Highlights (why it sells)
-- Booking that converts: pick barber/service/date/time with only free slots shown.
-- Retention-ready dashboard: upcoming/past visits, cancel/reschedule, auto no-show mark.
-- Lead quality: honeypot + rate-limit (3 req / 10 min) to cut bots and noise.
-- Multilingual (EN/UA/RU) switcher, status badges, polished notifications.
-- Content control: barber photos + about-page hero uploaded via admin.
+## Возможности
+- Клиент: выбор барбера/услуги/даты/времени, показ только свободных слотов; личный кабинет с предстоящими/прошедшими визитами, перенос и отмена с ограничением по времени; профиль с сохранением контактов; i18n (RU/UA/EN); защита от спама (honeypot + лимит 3 запроса/10 минут).
+- Админ: панель `/adminbr/` с управлением услугами, барберами, бронированиями и статусов «не явился»; загрузка фото барберов и героев раздела «О нас»; ручное подтверждение/закрытие записей.
 
-## Tech Stack
-- Python 3.13, Django 6, Gunicorn, WhiteNoise
-- Postgres via `DATABASE_URL` (SQLite fallback for local dev)
-- Plain HTML/CSS/JS (no heavy frontend frameworks)
+## Технологии
+- Python 3.13, Django 6, Gunicorn + WhiteNoise
+- Postgres через `DATABASE_URL` (для локалки — SQLite по умолчанию)
+- Чистый HTML/CSS/JS без тяжёлых фронтенд-фреймворков
+- i18n (ru/uk/en), кеш для rate-limit, медиа-хранилище для фото барберов
 
-## Quickstart (local)
+## Скриншоты
+| Файл | Описание |
+| --- | --- |
+| `cover.png` | Обложка с буллитами: онлайн-запись, админ-панель, антиспам, i18n |
+| `01_start.png` | Стартовый экран и выбор услуги/барбера |
+| `02_flow_service.png` | Шаг выбора услуги и стоимости |
+| `03_flow_datetime.png` | Календарь и время с фильтром свободных слотов |
+| `04_flow_confirm.png` | Подтверждение записи и уведомление пользователю |
+| `05_admin_orders.png` | Админ: список заказов, статусы, поиск |
+| `06_admin_admins.png` | Админ: управление услугами/барберами/контентом |
+Файлы лежат в корне репозитория (исходники — в `docs/`).
+
+## Статус проекта
+Готово для демо/портфолио: основной пользовательский поток и админ-панель работают, антиспам и i18n включены. Под конкретный бизнес требуется базовая настройка контента и домена.
+
+## Быстрый старт (локально)
 ```bash
-git clone https://github.com/WingorOsnova/BarbershopPP
-cd BarbershopPP/barbershop
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r ../requirements.txt
-cp ../.env.example .env  # set DJANGO_SECRET_KEY, DATABASE_URL (optional), hosts
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+pip install -r requirements.txt
+cp .env.example .env  # задайте ключ, DEBUG, ALLOWED_HOSTS, DATABASE_URL (опционально)
+cd barbershop
 python manage.py migrate
 python manage.py runserver
 ```
+- Админка: `/adminbr/` (создайте суперпользователя `python manage.py createsuperuser`).
+- Демо-данные: создайте услуги/барберов в админке, затем оформите пару бронирований на главной.
 
-## Tests
-```bash
-python manage.py test
-```
+## FAQ/Деплой
+- **Деплой на Render/аналог:** Procfile уже настроен под Gunicorn + WhiteNoise. Настройте `DATABASE_URL` на Postgres и добавьте переменные из `.env.example`.
+- **Статика и медиа:** при прод-выкате запустите `python manage.py collectstatic`; медиа (фото барберов, обложки) храните во внешнем бакете или на диске.
+- **Антиспам:** включён honeypot-поле и rate-limit (3 запроса / 10 минут) для форм записи.
+- **Локализация:** языки ru/uk/en переключаются через стандартные Django i18n URL (`/i18n/`).
 
-## Admin demo
-- URL: `/adminbr/`
-- Login: `adminbr2007`
-- Password: `adminbr2007`
-How to verify quickly: log in, create one booking (service + barber + date/time), then check the main page — the slot is shown once and cannot be double-booked.
-
-## Screenshots
-(Add 2–4 visuals in `media/screenshots` when publishing: home/booking flow, dashboard, profile/edit)
-
----
-
-## Українською (коротко)
-SPA для запису в барбершоп: послуги/барбери, кабінет (перенос/скасування), профіль, i18n (EN/UA/RU). Антиспам: honeypot + rate-limit 3/10хв. Адмін: `/adminbr/`, логін/пароль `adminbr2007`. Стек: Django 6, Postgres, Gunicorn, WhiteNoise.
-
-## Русский (коротко)
-SPA для онлайн-записи: услуги/барберы, кабинет (перенос/отмена), профиль, i18n (EN/UA/RU), антиспам (honeypot + лимит 3/10мин). Админка `/adminbr/`, логин/пароль `adminbr2007`. Стек: Django 6, Postgres, Gunicorn, WhiteNoise.
+## Контакты
+- Email: kostiantyn.lk22@gmail.com
+- Telegram: @WinGor0
+- Telegram-канал: https://t.me/kostiantyn_dev0
+- WhatsApp: +4916096584651
+- Freelancehunt: https://freelancehunt.com/my
