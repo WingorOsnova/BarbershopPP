@@ -46,9 +46,17 @@ python manage.py runserver
 - **Антиспам:** включён honeypot-поле и rate-limit (3 запроса / 10 минут) для форм записи.
 - **Локализация:** языки ru/uk/en переключаются через стандартные Django i18n URL (`/i18n/`).
 
+
 ## Контакты
 - Email: kostiantyn.lk22@gmail.com
 - Telegram: @WinGor0
 - Telegram-канал: https://t.me/kostiantyn_dev0
 - WhatsApp: +4916096584651
 - Freelancehunt: https://freelancehunt.com/my
+
+## Admin demo
+- URL: `/adminbr/`
+- Login: `adminbr2007`
+- Password: `adminbr2007`
+How to verify quickly: log in, create one booking (service + barber + date/time), then check the main page — the slot is shown once and cannot be double-booked.
+
