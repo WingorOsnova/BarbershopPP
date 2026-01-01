@@ -54,9 +54,12 @@ python manage.py runserver
 - WhatsApp: +4916096584651
 - Freelancehunt: https://freelancehunt.com/my
 
+<<<<<<< HEAD
 ## Admin demo
 - URL: `/adminbr/`
 - Login: `adminbr2007`
 - Password: `adminbr2007`
 How to verify quickly: log in, create one booking (service + barber + date/time), then check the main page — the slot is shown once and cannot be double-booked.
+=======
+>>>>>>> fdb043e (Remove unnecessary files and update configuration for production readiness)
 
